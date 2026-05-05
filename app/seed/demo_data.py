@@ -13,13 +13,34 @@ def seed_demo_data():
         if existing_user:
             return
 
-        user = User(
+        admin = User(
+            email="admin@elyas-ai.com",
+            full_name="E.L.Y.A.S. Admin",
+            role="admin",
+            hashed_password=hash_password("admin123"),
+            is_active=True,
+        )
+        db.add(admin)
+        db.flush()
+
+        user1 = User(
             email="demo@investor.com",
             full_name="John Smith",
             role="client",
             hashed_password=hash_password("demo123"),
+            is_active=True,
         )
-        db.add(user)
+        db.add(user1)
+        db.flush()
+
+        user2 = User(
+            email="broker@elyas-ai.com",
+            full_name="Broker Client",
+            role="client",
+            hashed_password=hash_password("demo123"),
+            is_active=True,
+        )
+        db.add(user2)
         db.flush()
 
         casks = [
@@ -40,7 +61,8 @@ def seed_demo_data():
                 temperature_c=12.4,
                 humidity_pct=68,
                 lbb_device_id="LBB-2026-0847",
-                owner_id=user.id,
+                status="maturing",
+                owner_id=user1.id,
             ),
             Cask(
                 cask_code="BN-2024-1205",
@@ -59,7 +81,8 @@ def seed_demo_data():
                 temperature_c=12.7,
                 humidity_pct=67,
                 lbb_device_id="LBB-2026-1205",
-                owner_id=user.id,
+                status="maturing",
+                owner_id=user1.id,
             ),
             Cask(
                 cask_code="LP-2025-0332",
@@ -78,19 +101,46 @@ def seed_demo_data():
                 temperature_c=12.2,
                 humidity_pct=69,
                 lbb_device_id="LBB-2027-0332",
-                owner_id=user.id,
+                status="maturing",
+                owner_id=user2.id,
             ),
         ]
+
         db.add_all(casks)
 
         listings = [
-            Listing(asset_type="cask", title="Ardbeg 2023 Oloroso Hogshead", seller_type="broker", market="exchange", price_gbp=45200),
-            Listing(asset_type="cask", title="Macallan 2022 Sherry Butt", seller_type="distillery", market="exchange", price_gbp=92000),
-            Listing(asset_type="bottle", title="Limited Single Cask Release 1998", seller_type="collector", market="exchange", price_gbp=2800),
-            Listing(asset_type="bottle", title="Distillery Direct Premium Release", seller_type="distillery", market="shop", price_gbp=185),
+            Listing(
+                asset_type="cask",
+                title="Ardbeg 2023 Oloroso Hogshead",
+                seller_type="broker",
+                market="exchange",
+                price_gbp=45200,
+            ),
+            Listing(
+                asset_type="cask",
+                title="Macallan 2022 Sherry Butt",
+                seller_type="distillery",
+                market="exchange",
+                price_gbp=92000,
+            ),
+            Listing(
+                asset_type="bottle",
+                title="Limited Single Cask Release 1998",
+                seller_type="collector",
+                market="exchange",
+                price_gbp=2800,
+            ),
+            Listing(
+                asset_type="bottle",
+                title="Distillery Direct Premium Release",
+                seller_type="distillery",
+                market="shop",
+                price_gbp=185,
+            ),
         ]
-        db.add_all(listings)
 
+        db.add_all(listings)
         db.commit()
+
     finally:
         db.close()
