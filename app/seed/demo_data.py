@@ -1,4 +1,4 @@
-from app.core.security import hash_password
+from app.core.security import get_password_hash
 from app.db.session import SessionLocal
 from app.models.cask import Cask
 from app.models.listing import Listing
@@ -17,7 +17,7 @@ def seed_demo_data():
             email="admin@elyas-ai.com",
             full_name="E.L.Y.A.S. Admin",
             role="admin",
-            hashed_password=hash_password("admin123"),
+            hashed_password=get_password_hash("admin123"),
             is_active=True,
         )
         db.add(admin)
@@ -27,7 +27,7 @@ def seed_demo_data():
             email="demo@investor.com",
             full_name="John Smith",
             role="client",
-            hashed_password=hash_password("demo123"),
+            hashed_password=get_password_hash("demo123"),
             is_active=True,
         )
         db.add(user1)
@@ -37,7 +37,7 @@ def seed_demo_data():
             email="broker@elyas-ai.com",
             full_name="Broker Client",
             role="client",
-            hashed_password=hash_password("demo123"),
+            hashed_password=get_password_hash("demo123"),
             is_active=True,
         )
         db.add(user2)
