@@ -29,6 +29,113 @@ def get_or_create_user(db, email, full_name, role, password):
     return user
 
 
+def get_or_create_cask(
+    db,
+    cask_code,
+    distillery,
+    warehouse,
+    cask_type,
+    wood_origin,
+    size_liters,
+    current_value_gbp,
+    purchase_price_gbp,
+    projected_value_gbp,
+    maturation_score,
+    risk_score,
+    abv,
+    fill_level,
+    temperature_c,
+    humidity_pct,
+    lbb_device_id,
+    status,
+    owner_id,
+):
+    cask = db.query(Cask).filter(Cask.cask_code == cask_code).first()
+
+    if cask:
+        cask.distillery = distillery
+        cask.warehouse = warehouse
+        cask.cask_type = cask_type
+        cask.wood_origin = wood_origin
+        cask.size_liters = size_liters
+        cask.current_value_gbp = current_value_gbp
+        cask.purchase_price_gbp = purchase_price_gbp
+        cask.projected_value_gbp = projected_value_gbp
+        cask.maturation_score = maturation_score
+        cask.risk_score = risk_score
+        cask.abv = abv
+        cask.fill_level = fill_level
+        cask.temperature_c = temperature_c
+        cask.humidity_pct = humidity_pct
+        cask.lbb_device_id = lbb_device_id
+        cask.status = status
+        cask.owner_id = owner_id
+        db.add(cask)
+        db.flush()
+        return cask
+
+    cask = Cask(
+        cask_code=cask_code,
+        distillery=distillery,
+        warehouse=warehouse,
+        cask_type=cask_type,
+        wood_origin=wood_origin,
+        size_liters=size_liters,
+        current_value_gbp=current_value_gbp,
+        purchase_price_gbp=purchase_price_gbp,
+        projected_value_gbp=projected_value_gbp,
+        maturation_score=maturation_score,
+        risk_score=risk_score,
+        abv=abv,
+        fill_level=fill_level,
+        temperature_c=temperature_c,
+        humidity_pct=humidity_pct,
+        lbb_device_id=lbb_device_id,
+        status=status,
+        owner_id=owner_id,
+    )
+    db.add(cask)
+    db.flush()
+    return cask
+
+
+def get_or_create_listing(
+    db,
+    title,
+    asset_type,
+    seller_type,
+    market,
+    price_gbp,
+    cask_id=None,
+    status="active",
+):
+    listing = db.query(Listing).filter(Listing.title == title).first()
+
+    if listing:
+        listing.asset_type = asset_type
+        listing.seller_type = seller_type
+        listing.market = market
+        listing.price_gbp = price_gbp
+        listing.cask_id = cask_id
+        listing.status = status
+        db.add(listing)
+        db.flush()
+        return listing
+
+    listing = Listing(
+        asset_type=asset_type,
+        title=title,
+        seller_type=seller_type,
+        market=market,
+        price_gbp=price_gbp,
+        cask_id=cask_id,
+        status=status,
+    )
+    db.add(listing)
+    db.flush()
+    return listing
+
+
 def seed_demo_data():
     db = SessionLocal()
 
@@ -57,109 +164,115 @@ def seed_demo_data():
             password="demo123",
         )
 
-        existing_casks = db.query(Cask).count()
+        cask1 = get_or_create_cask(
+            db=db,
+            cask_code="HH-2023-0847",
+            distillery="Ardbeg",
+            warehouse="WH-03 Islay",
+            cask_type="Oloroso Sherry",
+            wood_origin="European Oak",
+            size_liters=250,
+            current_value_gbp=45200,
+            purchase_price_gbp=38000,
+            projected_value_gbp=125000,
+            maturation_score=87,
+            risk_score=14,
+            abv=58.3,
+            fill_level=94.2,
+            temperature_c=12.4,
+            humidity_pct=68,
+            lbb_device_id="LBB-2026-0847",
+            status="maturing",
+            owner_id=user1.id,
+        )
 
-        if existing_casks == 0:
-            casks = [
-                Cask(
-                    cask_code="HH-2023-0847",
-                    distillery="Ardbeg",
-                    warehouse="WH-03 Islay",
-                    cask_type="Oloroso Sherry",
-                    wood_origin="European Oak",
-                    size_liters=250,
-                    current_value_gbp=45200,
-                    purchase_price_gbp=38000,
-                    projected_value_gbp=125000,
-                    maturation_score=87,
-                    risk_score=14,
-                    abv=58.3,
-                    fill_level=94.2,
-                    temperature_c=12.4,
-                    humidity_pct=68,
-                    lbb_device_id="LBB-2026-0847",
-                    status="maturing",
-                    owner_id=user1.id,
-                ),
-                Cask(
-                    cask_code="BN-2024-1205",
-                    distillery="Bunnahabhain",
-                    warehouse="WH-01 Islay",
-                    cask_type="Ex-Bourbon",
-                    wood_origin="American Oak",
-                    size_liters=200,
-                    current_value_gbp=38500,
-                    purchase_price_gbp=34300,
-                    projected_value_gbp=98000,
-                    maturation_score=82,
-                    risk_score=18,
-                    abv=59.1,
-                    fill_level=96.1,
-                    temperature_c=12.7,
-                    humidity_pct=67,
-                    lbb_device_id="LBB-2026-1205",
-                    status="maturing",
-                    owner_id=user1.id,
-                ),
-                Cask(
-                    cask_code="LP-2025-0332",
-                    distillery="Laphroaig",
-                    warehouse="WH-05 Islay",
-                    cask_type="Quarter Cask",
-                    wood_origin="American Oak",
-                    size_liters=125,
-                    current_value_gbp=41000,
-                    purchase_price_gbp=37800,
-                    projected_value_gbp=119000,
-                    maturation_score=79,
-                    risk_score=22,
-                    abv=60.2,
-                    fill_level=97.0,
-                    temperature_c=12.2,
-                    humidity_pct=69,
-                    lbb_device_id="LBB-2027-0332",
-                    status="maturing",
-                    owner_id=user2.id,
-                ),
-            ]
+        cask2 = get_or_create_cask(
+            db=db,
+            cask_code="BN-2024-1205",
+            distillery="Bunnahabhain",
+            warehouse="WH-01 Islay",
+            cask_type="Ex-Bourbon",
+            wood_origin="American Oak",
+            size_liters=200,
+            current_value_gbp=38500,
+            purchase_price_gbp=34300,
+            projected_value_gbp=98000,
+            maturation_score=82,
+            risk_score=18,
+            abv=59.1,
+            fill_level=96.1,
+            temperature_c=12.7,
+            humidity_pct=67,
+            lbb_device_id="LBB-2026-1205",
+            status="maturing",
+            owner_id=user1.id,
+        )
 
-            db.add_all(casks)
+        cask3 = get_or_create_cask(
+            db=db,
+            cask_code="LP-2025-0332",
+            distillery="Laphroaig",
+            warehouse="WH-05 Islay",
+            cask_type="Quarter Cask",
+            wood_origin="American Oak",
+            size_liters=125,
+            current_value_gbp=41000,
+            purchase_price_gbp=37800,
+            projected_value_gbp=119000,
+            maturation_score=79,
+            risk_score=22,
+            abv=60.2,
+            fill_level=97.0,
+            temperature_c=12.2,
+            humidity_pct=69,
+            lbb_device_id="LBB-2027-0332",
+            status="maturing",
+            owner_id=user2.id,
+        )
 
-        existing_listings = db.query(Listing).count()
+        get_or_create_listing(
+            db=db,
+            title="Ardbeg 2023 Oloroso Hogshead",
+            asset_type="cask",
+            seller_type="broker",
+            market="exchange",
+            price_gbp=45200,
+            cask_id=cask1.id,
+            status="active",
+        )
 
-        if existing_listings == 0:
-            listings = [
-                Listing(
-                    asset_type="cask",
-                    title="Ardbeg 2023 Oloroso Hogshead",
-                    seller_type="broker",
-                    market="exchange",
-                    price_gbp=45200,
-                ),
-                Listing(
-                    asset_type="cask",
-                    title="Macallan 2022 Sherry Butt",
-                    seller_type="distillery",
-                    market="exchange",
-                    price_gbp=92000,
-                ),
-                Listing(
-                    asset_type="bottle",
-                    title="Limited Single Cask Release 1998",
-                    seller_type="collector",
-                    market="exchange",
-                    price_gbp=2800,
-                ),
-                Listing(
-                    asset_type="bottle",
-                    title="Distillery Direct Premium Release",
-                    seller_type="distillery",
-                    market="shop",
-                    price_gbp=185,
-                ),
-            ]
+        get_or_create_listing(
+            db=db,
+            title="Bunnahabhain 2024 Ex-Bourbon",
+            asset_type="cask",
+            seller_type="broker",
+            market="exchange",
+            price_gbp=38500,
+            cask_id=cask2.id,
+            status="active",
+        )
 
-            db.add_all(listings)
+        get_or_create_listing(
+            db=db,
+            title="Laphroaig 2025 Quarter Cask",
+            asset_type="cask",
+            seller_type="broker",
+            market="exchange",
+            price_gbp=41000,
+            cask_id=cask3.id,
+            status="active",
+        )
+
+        get_or_create_listing(
+            db=db,
+            title="Distillery Direct Premium Release",
+            asset_type="bottle",
+            seller_type="distillery",
+            market="shop",
+            price_gbp=185,
+            cask_id=None,
+            status="active",
+        )
 
         db.commit()
 
