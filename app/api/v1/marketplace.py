@@ -3,8 +3,8 @@ from sqlalchemy.orm import Session
 
 from app.api.v1.deps import get_current_user
 from app.db.session import get_db
-from app.models.cask import Cask
 from app.models.listing import Listing
+from app.models.transaction import Transaction
 from app.models.user import User
 from app.schemas.listing import ListingOut
 
@@ -61,13 +61,25 @@ def buy_listing(
 
     listing.status = "sold"
 
+    transaction = Transaction(
+        transaction_type="purchase",
+        asset_type=listing.asset_type,
+        listing_id=listing.id,
+        buyer_id=current_user.id,
+        amount_gbp=listing.price_gbp,
+        status="completed",
+    )
+
     db.add(listing)
+    db.add(transaction)
     db.commit()
     db.refresh(listing)
+    db.refresh(transaction)
 
     return {
         "message": "Purchase completed",
         "listing_id": listing.id,
+        "transaction_id": transaction.id,
         "buyer_id": current_user.id,
         "status": listing.status,
     }
