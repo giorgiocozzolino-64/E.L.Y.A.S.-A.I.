@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 from app.api.v1 import (
     admin,
+    analytics,
     auth,
     casks,
     exchange,
@@ -10,7 +11,6 @@ from app.api.v1 import (
     transactions,
     users,
 )
-
 api_router = APIRouter()
 
 api_router.include_router(auth.router, prefix="/auth", tags=["Auth"])
