@@ -10,21 +10,14 @@ from app.schemas.transaction import TransactionOut
 router = APIRouter()
 
 
-@router.get("/history", response_model=list[TransactionOut])
-def transaction_history(
+@router.get("/my", response_model=list[TransactionOut])
+def my_transactions(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    if current_user.role == "admin":
-        return (
-            db.query(Transaction)
-            .order_by(Transaction.created_at.desc())
-            .all()
-        )
-
     return (
         db.query(Transaction)
         .filter(Transaction.buyer_id == current_user.id)
-        .order_by(Transaction.created_at.desc())
+        .order_by(Transaction.id.desc())
         .all()
     )
