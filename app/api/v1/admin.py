@@ -1,53 +1,64 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.db.session import get_db
-from app.models.user import User
-from app.models.cask import Cask
 from app.api.v1.deps import get_current_user
+from app.db.session import get_db
+from app.models.cask import Cask
+from app.models.user import User
 
 router = APIRouter()
 
 
+def require_admin(current_user: User):
+    if getattr(current_user, "role", None) != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+
+
 @router.get("/users")
-def get_users(
+def list_users(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    if current_user.role != "admin":
-        return []
+    require_admin(current_user)
 
-    users = db.query(User).all()
+    users = db.query(User).order_by(User.id.asc()).all()
 
-    return [
-        {
-            "id": u.id,
-            "email": u.email,
-            "full_name": u.full_name,
-            "role": u.role,
-        }
-        for u in users
-    ]
+    result = []
+    for u in users:
+        result.append({
+            "id": getattr(u, "id", None),
+            "email": getattr(u, "email", ""),
+            "full_name": getattr(u, "full_name", ""),
+            "role": getattr(u, "role", ""),
+            "is_active": getattr(u, "is_active", True),
+        })
+
+    return result
 
 
 @router.get("/casks")
-def get_casks(
+def list_all_casks(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    if current_user.role != "admin":
-        return []
+    require_admin(current_user)
 
-    casks = db.query(Cask).all()
+    casks = db.query(Cask).order_by(Cask.id.asc()).all()
 
-    return [
-        {
-            "id": c.id,
-            "cask_code": c.cask_code,
-            "distillery": c.distillery,
-            "owner_id": c.owner_id,
-            "current_value_gbp": c.current_value_gbp,
-            "projected_value_gbp": c.projected_value_gbp,
-        }
-        for c in casks
-    ]
+    result = []
+    for c in casks:
+        result.append({
+            "id": getattr(c, "id", None),
+            "cask_code": getattr(c, "cask_code", ""),
+            "distillery": getattr(c, "distillery", ""),
+            "warehouse": getattr(c, "warehouse", ""),
+            "cask_type": getattr(c, "cask_type", ""),
+            "owner_id": getattr(c, "owner_id", None),
+            "current_value_gbp": getattr(c, "current_value_gbp", 0),
+            "projected_value_gbp": getattr(c, "projected_value_gbp", 0),
+            "maturation_score": getattr(c, "maturation_score", 0),
+            "risk_score": getattr(c, "risk_score", 0),
+            "status": getattr(c, "status", ""),
+        })
+
+    return result
