@@ -1,3 +1,4 @@
+from sqlalchemy import text
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -25,7 +26,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+def patch_database():
+    with engine.connect() as conn:
+        conn.execute(text("ALTER TABLE listings ADD COLUMN IF NOT EXISTS cask_id INTEGER"))
+        conn.commit()
+
+
 Base.metadata.create_all(bind=engine)
+patch_database()
 seed_demo_data()
 
 app.include_router(api_router, prefix="/api/v1")
