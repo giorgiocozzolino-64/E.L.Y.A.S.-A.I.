@@ -28,3 +28,5 @@ api_router.include_router(marketplace.router, prefix="/marketplace", tags=["Mark
 api_router.include_router(transactions.router, prefix="/transactions", tags=["Transactions"])
 
 api_router.include_router(admin.router, prefix="/admin", tags=["Admin"])
+
+api_router.include_router(analytics.router, prefix="/analytics", tags=["Analytics"])
