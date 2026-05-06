@@ -19,32 +19,12 @@ api_router.include_router(users.router, prefix="/users", tags=["Users"])
 
 api_router.include_router(casks.router, prefix="/casks", tags=["Cask Monitoring"])
 
-api_router.include_router(
-    portfolio.router,
-    prefix="/portfolio",
-    tags=["Portfolio"]
-)
+api_router.include_router(portfolio.router, prefix="/portfolio", tags=["Portfolio"])
 
-api_router.include_router(
-    exchange.router,
-    prefix="/exchange",
-    tags=["Exchange"]
-)
+api_router.include_router(exchange.router, prefix="/exchange", tags=["Exchange"])
 
-api_router.include_router(
-    marketplace.router,
-    prefix="/marketplace",
-    tags=["Marketplace"]
-)
+api_router.include_router(marketplace.router, prefix="/marketplace", tags=["Marketplace"])
 
-api_router.include_router(
-    admin.router,
-    prefix="/admin",
-    tags=["Admin"]
-)
+api_router.include_router(transactions.router, prefix="/transactions", tags=["Transactions"])
 
-api_router.include_router(
-    transactions.router,
-    prefix="/transactions",
-    tags=["Transactions"]
-)
+api_router.include_router(admin.router, prefix="/admin", tags=["Admin"])
