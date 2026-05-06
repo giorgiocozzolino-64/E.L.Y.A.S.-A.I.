@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.api.v1.deps import get_current_user
+from app.core.security import get_current_user
 from app.db.session import get_db
+from app.models.cask import Cask
 from app.models.listing import Listing
 from app.models.transaction import Transaction
 from app.models.user import User
@@ -13,7 +14,10 @@ router = APIRouter()
 
 @router.get("/offers", response_model=list[ListingOut])
 def marketplace_offers(db: Session = Depends(get_db)):
-    return db.query(Listing).filter(Listing.status == "active").all()
+    return db.query(Listing).filter(
+        Listing.market == "exchange",
+        Listing.status == "active",
+    ).all()
 
 
 @router.get("/shop", response_model=list[ListingOut])
@@ -22,27 +26,6 @@ def online_shop(db: Session = Depends(get_db)):
         Listing.market == "shop",
         Listing.status == "active",
     ).all()
-
-
-@router.get("/casks")
-def marketplace_casks(db: Session = Depends(get_db)):
-    listings = db.query(Listing).filter(
-        Listing.asset_type == "cask",
-        Listing.status == "active",
-    ).all()
-
-    return [
-        {
-            "id": l.id,
-            "asset_type": l.asset_type,
-            "title": l.title,
-            "seller_type": l.seller_type,
-            "market": l.market,
-            "price_gbp": l.price_gbp,
-            "status": l.status,
-        }
-        for l in listings
-    ]
 
 
 @router.post("/buy/{listing_id}")
@@ -57,29 +40,36 @@ def buy_listing(
         raise HTTPException(status_code=404, detail="Listing not found")
 
     if listing.status != "active":
-        raise HTTPException(status_code=400, detail="Listing is not active")
+        raise HTTPException(status_code=400, detail="Listing not active")
 
-    listing.status = "sold"
-
+    # CREATE TRANSACTION
     transaction = Transaction(
-        transaction_type="purchase",
-        asset_type=listing.asset_type,
-        listing_id=listing.id,
         buyer_id=current_user.id,
+        listing_id=listing.id,
         amount_gbp=listing.price_gbp,
+        asset_type=listing.asset_type,
         status="completed",
     )
 
-    db.add(listing)
     db.add(transaction)
+
+    # TRANSFER OWNERSHIP IF CASK
+    if listing.cask_id:
+        cask = db.query(Cask).filter(Cask.id == listing.cask_id).first()
+
+        if cask:
+            cask.owner_id = current_user.id
+            db.add(cask)
+
+    # CLOSE LISTING
+    listing.status = "sold"
+    db.add(listing)
+
     db.commit()
-    db.refresh(listing)
-    db.refresh(transaction)
 
     return {
         "message": "Purchase completed",
         "listing_id": listing.id,
-        "transaction_id": transaction.id,
         "buyer_id": current_user.id,
-        "status": listing.status,
+        "status": "sold",
     }
