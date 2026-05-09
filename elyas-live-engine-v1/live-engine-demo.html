@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>E.L.Y.A.S.-A.I. Live Engine Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: radial-gradient(circle at top, #172044 0%, #071225 45%, #050817 100%);
+    color: white;
+    padding: 32px;
+}
+
+h1 {
+    font-size: 42px;
+    font-weight: 300;
+}
+
+.card {
+    background: rgba(17, 34, 74, .88);
+    border: 1px solid rgba(255,255,255,.08);
+    padding: 24px;
+    border-radius: 14px;
+    margin-top: 18px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+.positive {
+    color: #00ff9c;
+}
+
+.negative {
+    color: #ff5252;
+}
+
+.ticker-item {
+    display: inline-block;
+    margin-right: 22px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,.06);
+    border-radius: 999px;
+}
+
+.trade-feed-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+@media(max-width:900px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<h1>E.L.Y.A.S.-A.I. Live Market Engine</h1>
+<p>Status: <b data-elyas-market-status>Connecting...</b> · Clock: <span data-elyas-clock></span></p>
+
+<div class="grid">
+    <div class="card">
+        <h3>Islay Cask Index</h3>
+        <h2 data-elyas-islay-index>...</h2>
+    </div>
+
+    <div class="card">
+        <h3>Rare Bottle Index</h3>
+        <h2 data-elyas-bottle-index>...</h2>
+    </div>
+
+    <div class="card">
+        <h3>24h Volume</h3>
+        <h2 data-elyas-volume>...</h2>
+    </div>
+
+    <div class="card">
+        <h3>Avg Spread</h3>
+        <h2 data-elyas-spread>...</h2>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Live Ticker Tape</h3>
+    <div data-elyas-ticker-tape></div>
+</div>
+
+<div class="card">
+    <h3>Recent Trades</h3>
+    <div data-elyas-trades-feed></div>
+</div>
+
+<script src="assets/js/market-socket.js"></script>
+
+</body>
+</html>

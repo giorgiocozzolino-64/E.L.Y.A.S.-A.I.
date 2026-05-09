@@ -1,0 +1,22 @@
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#0a0f2d;
+    color:white;
+}
+
+.topbar{
+    padding:20px;
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.container{
+    padding:40px;
+}
+
+.hero{
+    background:rgba(255,255,255,.05);
+    padding:40px;
+    border-radius:16px;
+}

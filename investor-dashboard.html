@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>E.L.Y.A.S.-A.I. Investor Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:radial-gradient(circle at top,#172044 0%,#071225 45%,#050817 100%);color:white}.app{display:grid;grid-template-columns:270px 1fr;min-height:100vh}.sidebar{background:rgba(5,9,24,.96);border-right:1px solid rgba(255,255,255,.08);padding:24px 18px}.brand-title{color:#00d4ff;font-size:22px;font-weight:900;letter-spacing:1px}.brand-subtitle{margin-top:6px;color:#7f8aad;font-size:12px}.nav-title{margin:28px 8px 10px;color:#53607f;font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:bold}.nav a{display:block;padding:12px 14px;margin-bottom:7px;color:#b8c2e0;text-decoration:none;border-radius:10px;font-size:14px}.nav a:hover,.nav a.active{background:rgba(0,212,255,.10);color:white}.main{min-width:0}.topbar{min-height:74px;background:rgba(8,13,34,.88);border-bottom:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;padding:18px 34px;position:sticky;top:0;z-index:10;backdrop-filter:blur(12px)}.topbar-title{font-size:18px;font-weight:bold}.topbar-subtitle{font-size:12px;color:#7f8aad;margin-top:4px}.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}button,.btn{background:linear-gradient(135deg,#00d4ff,#0099cc);color:#061022;border:0;padding:10px 16px;border-radius:8px;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block;font-size:13px}.btn.secondary,button.secondary{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:white}.container{padding:34px}.hero{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:24px}.kicker{color:#00d4ff;font-size:12px;text-transform:uppercase;letter-spacing:1.4px;font-weight:bold;margin-bottom:8px}h1{margin:0;font-size:42px;font-weight:300}.description{margin-top:10px;color:#9fb3d9;max-width:980px;line-height:1.55}.live-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,255,156,.1);border:1px solid rgba(0,255,156,.35);color:#00ff9c;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:bold}.pulse{width:9px;height:9px;border-radius:50%;background:#00ff9c;box-shadow:0 0 16px #00ff9c;animation:pulse 1.2s infinite}@keyframes pulse{0%{opacity:.4;transform:scale(.9)}50%{opacity:1;transform:scale(1.25)}100%{opacity:.4;transform:scale(.9)}}.metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px}.metric{background:rgba(17,34,74,.88);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px}.metric-label{color:#9fb3d9;font-size:11px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:9px}.metric-value{font-size:24px;font-weight:bold}.positive{color:#00ff9c}.negative{color:#ff5252}.gold{color:#ffcc00}.cyan{color:#00d4ff}.layout{display:grid;grid-template-columns:1.15fr .85fr;gap:22px}.panel{background:rgba(17,34,74,.88);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;box-shadow:0 14px 34px rgba(0,0,0,.18)}.panel h2{margin-top:0}.holdings{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.holding{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px}.holding:hover{border-color:rgba(0,212,255,.35)}.holding-code{color:#00d4ff;font-weight:bold;font-family:"Courier New",monospace;font-size:13px}.holding-title{margin-top:8px;font-size:19px;font-weight:bold}.holding-meta{margin-top:7px;color:#9fb3d9;font-size:13px}.holding-value{margin-top:14px;font-size:25px;font-weight:bold}.badge{display:inline-block;margin-top:10px;padding:6px 9px;border-radius:999px;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.28);color:#00d4ff;font-size:11px;font-weight:bold;text-transform:uppercase}.badge.good{color:#00ff9c;border-color:rgba(0,255,156,.35);background:rgba(0,255,156,.08)}.badge.warn{color:#ffcc00;border-color:rgba(255,204,0,.35);background:rgba(255,204,0,.08)}.row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:13px}.row.header{color:#9fb3d9;font-size:11px;text-transform:uppercase;letter-spacing:.8px;font-weight:bold}.feed-item{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08);color:#c7d2fe;font-size:13px}.feed-item b{color:white}.split{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:22px}.monitoring{border:1px solid rgba(0,212,255,.35);background:linear-gradient(180deg,rgba(0,212,255,.10),rgba(17,34,74,.88))}.ai{border:1px solid rgba(255,204,0,.34);background:linear-gradient(180deg,rgba(255,204,0,.10),rgba(17,34,74,.88))}.allocation{margin-bottom:14px}.allocation-head{display:flex;justify-content:space-between;font-size:13px;color:#c7d2fe}.progress{height:9px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;margin-top:8px}.progress div{height:100%;background:linear-gradient(90deg,#00d4ff,#00ff9c)}.version{position:fixed;right:12px;bottom:10px;color:#44506e;font-size:12px}.modules{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}@media(max-width:1200px){.app{grid-template-columns:1fr}.hero,.topbar{flex-direction:column;align-items:flex-start}.metrics,.layout,.holdings,.split,.modules{grid-template-columns:1fr}.container{padding:22px}.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+<div class="brand-title">E.L.Y.A.S.-A.I.</div><div class="brand-subtitle">Investor Terminal</div>
+<div class="nav">
+<div class="nav-title">Investor</div>
+<a href="platform.html?v=1">🏠 Platform Home</a>
+<a class="active" href="investor-dashboard.html?v=1">💼 Investor Dashboard</a>
+<a href="portfolio.html?v=999">📊 Portfolio</a>
+<a href="cask-detail.html?v=999">🥃 Cask Monitoring</a>
+<a href="marketplace.html?v=999">📈 Exchange</a>
+<a href="transactions.html?v=999">💳 Transactions</a>
+<div class="nav-title">Engines</div>
+<a href="market-engine-demo.html?v=7">⚡ Execution Engine</a>
+<a href="live-engine-demo.html?v=1">📡 Live Market Engine</a>
+<div class="nav-title">Institutional</div>
+<a href="#ai">AI Valuation</a><a href="#monitoring">Monitoring</a><a href="#allocation">Allocation</a><a href="#actions">Investor Actions</a>
+</div>
+</aside>
+<main class="main">
+<div class="topbar">
+<div><div class="topbar-title">Investor Family Office Terminal</div><div class="topbar-subtitle">NAV · P&L · AI valuation · telemetry · independent market access</div></div>
+<div class="actions"><a class="btn secondary" href="platform.html?v=1">Platform</a><a class="btn secondary" href="marketplace.html?v=999">Exchange</a><a class="btn secondary" href="cask-detail.html?v=999">Monitoring</a><button onclick="logout()">Logout</button></div>
+</div>
+<div class="container">
+<section class="hero">
+<div><div class="kicker">Independent Investor Infrastructure</div><h1>Investor Dashboard</h1><div class="description">Control your whisky assets independently: live NAV, AI valuation, verified cask telemetry, exchange liquidity and execution without broker-controlled opacity.</div></div>
+<div class="live-badge"><span class="pulse"></span> INVESTOR LIVE</div>
+</section>
+<section class="metrics">
+<div class="metric"><div class="metric-label">Total NAV</div><div class="metric-value">£124,700</div><div class="positive">▲ £18,200 +17.1%</div></div>
+<div class="metric"><div class="metric-label">Projected Exit</div><div class="metric-value">£342K</div><div class="positive">+174% ROI</div></div>
+<div class="metric"><div class="metric-label">Unrealized P&L</div><div class="metric-value positive">£18.2K</div><div>Since acquisition</div></div>
+<div class="metric"><div class="metric-label">Liquidity Score</div><div class="metric-value">82/100</div><div class="gold">Marketable</div></div>
+<div class="metric"><div class="metric-label">AI Confidence</div><div class="metric-value">94%</div><div class="positive">Low-risk profile</div></div>
+</section>
+<section class="layout">
+<div class="panel">
+<h2>Holdings</h2><p class="description">Verified whisky assets with live valuation, monitoring and liquidity intelligence.</p>
+<div class="holdings">
+<div class="holding"><div class="holding-code">HH-2023-0847</div><div class="holding-title">Ardbeg Oloroso Hogshead</div><div class="holding-meta">Islay · 250L · LBB Online · 3y 4m</div><div class="holding-value">£45,200</div><span class="badge good">AI Hold</span><div style="margin-top:14px;"><a class="btn" href="cask-detail.html?v=999">Monitor</a> <a class="btn secondary" href="marketplace.html?v=999">List</a></div></div>
+<div class="holding"><div class="holding-code">BN-2024-1205</div><div class="holding-title">Bunnahabhain Ex-Bourbon</div><div class="holding-meta">Islay · 200L · LBB Sync Pending · 2y 2m</div><div class="holding-value">£38,500</div><span class="badge warn">Watch Liquidity</span><div style="margin-top:14px;"><a class="btn" href="cask-detail.html?v=999">Monitor</a> <a class="btn secondary" href="marketplace.html?v=999">List</a></div></div>
+<div class="holding"><div class="holding-code">LP-2025-0332</div><div class="holding-title">Laphroaig Quarter Cask</div><div class="holding-meta">Islay · 125L · LBB Online · 1y 4m</div><div class="holding-value">£41,000</div><span class="badge good">Accumulating Demand</span><div style="margin-top:14px;"><a class="btn" href="cask-detail.html?v=999">Monitor</a> <a class="btn secondary" href="marketplace.html?v=999">List</a></div></div>
+<div class="holding"><div class="holding-code">RARE-1998</div><div class="holding-title">Single Cask Bottle Release</div><div class="holding-meta">Bottle · Collector Market · Verified provenance</div><div class="holding-value">£2,800</div><span class="badge good">Collector Demand</span><div style="margin-top:14px;"><a class="btn" href="marketplace.html?v=999">Sell</a> <a class="btn secondary" href="transactions.html?v=999">History</a></div></div>
+</div>
+</div>
+<aside class="panel ai" id="ai">
+<h2>AI Valuation Layer</h2>
+<div class="feed-item"><b>Portfolio Thesis:</b> Islay concentration is outperforming benchmark by 8.7%.</div>
+<div class="feed-item"><b>Sell Signal:</b> No forced liquidation recommended. Liquidity is improving.</div>
+<div class="feed-item"><b>Risk:</b> Low due to warehouse stability and brand demand.</div>
+<div class="feed-item"><b>Opportunity:</b> Add sherry matured Speyside exposure.</div>
+<div class="feed-item"><b>Market:</b> Private buyer demand rising for verified peated casks.</div>
+<div style="margin-top:18px;"><a class="btn" href="marketplace.html?v=999">Open Exchange</a> <a class="btn secondary" href="market-engine-demo.html?v=7">Execution Engine</a></div>
+</aside>
+</section>
+<section class="split">
+<div class="panel monitoring" id="monitoring">
+<h2>Cask Monitoring Intelligence</h2><p class="description">Leonardo Black Box telemetry and AI anomaly detection across owned assets.</p>
+<div class="row header"><div>Cask</div><div>Temp</div><div>Humidity</div><div>Status</div></div>
+<div class="row"><div class="cyan">HH-2023-0847</div><div>12.4°C</div><div>68%</div><div class="positive">Optimal</div></div>
+<div class="row"><div class="cyan">BN-2024-1205</div><div>12.7°C</div><div>66%</div><div class="gold">Sync Pending</div></div>
+<div class="row"><div class="cyan">LP-2025-0332</div><div>12.2°C</div><div>69%</div><div class="positive">Optimal</div></div>
+<div style="margin-top:18px;"><a class="btn" href="cask-detail.html?v=999">Open Cask Monitoring</a></div>
+</div>
+<div class="panel" id="allocation">
+<h2>Portfolio Allocation</h2>
+<div class="allocation"><div class="allocation-head"><span>Islay Casks</span><span>72%</span></div><div class="progress"><div style="width:72%"></div></div></div>
+<div class="allocation"><div class="allocation-head"><span>Speyside / Highland</span><span>12%</span></div><div class="progress"><div style="width:12%"></div></div></div>
+<div class="allocation"><div class="allocation-head"><span>Rare Bottles</span><span>9%</span></div><div class="progress"><div style="width:9%"></div></div></div>
+<div class="allocation"><div class="allocation-head"><span>Cash / Pending Orders</span><span>7%</span></div><div class="progress"><div style="width:7%"></div></div></div>
+<div class="feed-item"><b>AI Rebalance:</b> Reduce Islay concentration below 65% over next two acquisitions.</div>
+</div>
+</section>
+<section class="split">
+<div class="panel"><h2>Market Intelligence</h2><div id="marketFeed"><div class="feed-item"><b>Live Market:</b> Ardbeg casks are trading above warehouse average.</div><div class="feed-item"><b>Bid Signal:</b> Buyer demand detected for peated young casks.</div><div class="feed-item"><b>Rare Bottle:</b> Collector demand active for 1990s verified releases.</div><div class="feed-item"><b>Exchange:</b> Average spread remains institutional-grade.</div></div></div>
+<div class="panel" id="actions"><h2>Investor Actions</h2><div class="modules">
+<div class="holding"><div class="holding-title">🛒 Buy Asset</div><div class="holding-meta">Access verified marketplace and exchange order flow.</div><div style="margin-top:14px;"><a class="btn" href="marketplace.html?v=999">Buy</a></div></div>
+<div class="holding"><div class="holding-title">📤 List Asset</div><div class="holding-meta">Prepare owned cask or bottle for sale with verification.</div><div style="margin-top:14px;"><a class="btn" href="marketplace.html?v=999">List</a></div></div>
+<div class="holding"><div class="holding-title">🤝 Request OTC</div><div class="holding-meta">Create private request for institutional buyer/seller flow.</div><div style="margin-top:14px;"><a class="btn" href="broker-desk.html?v=1">OTC</a></div></div>
+<div class="holding"><div class="holding-title">📜 Transactions</div><div class="holding-meta">Review trade history, settlement and ownership movement.</div><div style="margin-top:14px;"><a class="btn" href="transactions.html?v=999">Open</a></div></div>
+</div></div>
+</section>
+</div>
+</main>
+</div>
+<div class="version">investor-dashboard v1</div>
+<script src="assets/js/api-client.js"></script>
+<script>
+const token = localStorage.getItem("token");
+if (!token) { window.location.href = "index.html?v=999"; }
+function logout(){ localStorage.removeItem("token"); window.location.href = "index.html?v=999"; }
+function addMarketFeed(){
+ const items=["<b>AI:</b> Liquidity improved for verified Islay assets.","<b>Market:</b> Best bid increased on young peated casks.","<b>Telemetry:</b> All LBB-linked casks remain within tolerance.","<b>Signal:</b> Hold recommendation maintained for Ardbeg Oloroso.","<b>Opportunity:</b> Speyside sherry casks trading below fair value."];
+ const feed=document.getElementById("marketFeed"); const div=document.createElement("div"); div.className="feed-item"; div.innerHTML=items[Math.floor(Math.random()*items.length)]; feed.prepend(div); while(feed.children.length>7){feed.removeChild(feed.lastChild);}
+}
+setInterval(addMarketFeed,5000);
+</script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+# Add these two lines inside your existing app/main.py
+
+from app.elyas_api_routes import router as elyas_api_router
+
+app.include_router(elyas_api_router, prefix="/api/v1")

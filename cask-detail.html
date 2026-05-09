@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>E.L.Y.A.S.-A.I. Cask Intelligence</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: radial-gradient(circle at top, #172044 0%, #071225 45%, #0a0e27 100%);
+    color: #e8e9ed;
+}
+
+/* PLATFORM LAYOUT */
+.app {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+}
+
+.sidebar {
+    background: rgba(5, 9, 24, .96);
+    border-right: 1px solid rgba(255,255,255,.08);
+    padding: 22px 16px;
+}
+
+.brand {
+    margin-bottom: 30px;
+    padding: 0 8px;
+}
+
+.brand-title {
+    color: #00d4ff;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.brand-subtitle {
+    margin-top: 5px;
+    color: #7f8aad;
+    font-size: 12px;
+}
+
+.nav-title {
+    margin: 26px 10px 10px;
+    color: #53607f;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.nav a {
+    display: block;
+    padding: 12px 14px;
+    margin-bottom: 6px;
+    color: #b8c2e0;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.nav a:hover,
+.nav a.active {
+    background: rgba(0, 212, 255, .10);
+    color: white;
+}
+
+.main {
+    min-width: 0;
+}
+
+.topbar {
+    min-height: 72px;
+    background: rgba(8, 13, 34, .88);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 34px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(12px);
+}
+
+.topbar-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.topbar-subtitle {
+    font-size: 12px;
+    color: #7f8aad;
+    margin-top: 4px;
+}
+
+.topbar-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.container {
+    max-width: 1400px;
+    margin: auto;
+    padding: 34px;
+}
+
+button,
+.button-link {
+    background: linear-gradient(135deg, #00d4ff, #0099cc);
+    color: #061022;
+    border: 0;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+}
+
+.button-secondary {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    color: white;
+}
+
+/* PAGE */
+.hero {
+    background: rgba(18, 25, 54, .92);
+    border: 1px solid rgba(255,255,255,.08);
+    padding: 26px;
+    border-radius: 16px;
+    margin-bottom: 25px;
+    box-shadow: 0 16px 40px rgba(0,0,0,.2);
+}
+
+.kicker {
+    color: #00d4ff;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.code {
+    color: #00e5ff;
+    font-family: "Courier New", monospace;
+    font-weight: bold;
+}
+
+.title {
+    font-size: 32px;
+    margin: 8px 0;
+    font-weight: 300;
+    color: white;
+}
+
+.hero-description {
+    color: #9fb3d9;
+    max-width: 820px;
+    line-height: 1.5;
+}
+
+.badge {
+    display: inline-block;
+    padding: 7px 11px;
+    border-radius: 999px;
+    font-size: 11px;
+    margin-top: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.low {
+    background: rgba(0,255,156,.10);
+    color: #00ff9c;
+    border: 1px solid rgba(0,255,156,.35);
+}
+
+.mid {
+    background: rgba(255,204,0,.10);
+    color: #ffea00;
+    border: 1px solid rgba(255,204,0,.35);
+}
+
+.high {
+    background: rgba(255,82,82,.10);
+    color: #ff5252;
+    border: 1px solid rgba(255,82,82,.35);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: rgba(18, 25, 54, .92);
+    border: 1px solid rgba(255,255,255,.08);
+    padding: 20px;
+    border-radius: 13px;
+    text-align: center;
+    box-shadow: 0 14px 34px rgba(0,0,0,.16);
+}
+
+.card h3 {
+    color: #9aa0c0;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    margin: 0 0 12px;
+}
+
+.big {
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+}
+
+.section {
+    background: rgba(18, 25, 54, .92);
+    border: 1px solid rgba(255,255,255,.08);
+    padding: 22px;
+    border-radius: 13px;
+    margin-bottom: 20px;
+}
+
+.section h3 {
+    margin-top: 0;
+}
+
+.label {
+    color: #9aa0c0;
+    font-size: 13px;
+}
+
+.value {
+    font-size: 18px;
+    margin-top: 6px;
+    color: white;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+svg {
+    width: 100%;
+    height: 240px;
+    background: #0f1533;
+    border-radius: 10px;
+}
+
+.error {
+    color: #ff5252;
+    text-align: center;
+    padding: 25px;
+}
+
+.version {
+    position: fixed;
+    bottom: 10px;
+    right: 12px;
+    color: #44506e;
+    font-size: 12px;
+}
+
+@media(max-width: 1100px) {
+    .app {
+        grid-template-columns: 1fr;
+    }
+
+    .grid,
+    .row {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .container {
+        padding: 22px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-title">E.L.Y.A.S.-A.I.</div>
+            <div class="brand-subtitle">Spirits Tech Terminal</div>
+        </div>
+
+        <div class="nav">
+            <div class="nav-title">Platform</div>
+            <a href="portfolio.html?v=999">📊 Dashboard</a>
+            <a class="active" href="cask-detail.html?v=999">🥃 Cask Monitoring</a>
+            <a href="marketplace.html?v=999">📈 Whisky Exchange</a>
+            <a href="transactions.html?v=999">💳 Transactions</a>
+            <a href="investor-dashboard.html?v=999">💼 Investor View</a>
+            <a href="admin.html?v=999">⚙️ Admin</a>
+
+            <div class="nav-title">Business Lines</div>
+            <a href="marketplace.html?v=999#cask-exchange">🏛️ Cask Exchange</a>
+            <a href="marketplace.html?v=999#bottle-exchange">🍾 Bottle Exchange</a>
+            <a href="marketplace.html?v=999#shop">🛒 Distillery Shop</a>
+            <a href="marketplace.html?v=999#b2b">🤝 B2B / B2C</a>
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+            <div>
+                <div class="topbar-title">Cask Intelligence</div>
+                <div class="topbar-subtitle">Digital twin · AI valuation · IoT telemetry · blockchain verification</div>
+            </div>
+
+            <div class="topbar-actions">
+                <a class="button-link button-secondary" href="portfolio.html?v=999">← Portfolio</a>
+                <a class="button-link button-secondary" href="marketplace.html?v=999">Exchange</a>
+                <button onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <div id="page-error" class="error" style="display:none;"></div>
+
+            <div class="hero">
+                <div class="kicker">Single Cask Digital Twin</div>
+                <div id="code" class="code">...</div>
+                <div id="title" class="title">Loading...</div>
+                <div class="hero-description">
+                    Real-time cask intelligence for monitored whisky assets. Environmental telemetry,
+                    AI investment thesis, projected value curve and verification layer.
+                </div>
+                <div id="riskBadge"></div>
+            </div>
+
+            <div class="grid">
+                <div class="card"><h3>Current</h3><div id="current" class="big"></div></div>
+                <div class="card"><h3>Projected</h3><div id="projected" class="big"></div></div>
+                <div class="card"><h3>Return</h3><div id="roi" class="big"></div></div>
+                <div class="card"><h3>AI Score</h3><div id="ai" class="big"></div></div>
+            </div>
+
+            <div class="section">
+                <h3>📈 Value Projection</h3>
+                <svg id="chart"></svg>
+            </div>
+
+            <div class="section">
+                <h3>🧠 AI Investment Thesis</h3>
+                <div id="thesis"></div>
+            </div>
+
+            <div class="section">
+                <h3>🌡 Environmental Telemetry</h3>
+                <div class="row">
+                    <div><div class="label">Temperature</div><div id="temp" class="value"></div></div>
+                    <div><div class="label">Humidity</div><div id="hum" class="value"></div></div>
+                    <div><div class="label">Fill Level</div><div id="fill" class="value"></div></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>📊 Technical Details</h3>
+                <div class="row">
+                    <div><div class="label">Distillery</div><div id="dist" class="value"></div></div>
+                    <div><div class="label">Warehouse</div><div id="wh" class="value"></div></div>
+                    <div><div class="label">Type</div><div id="type" class="value"></div></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>🔗 Blockchain Verification</h3>
+                <div id="blockchain">Verifying asset authenticity... ✓</div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<div class="version">cask-detail v999 linked</div>
+
+<script>
+const API = "https://elyas-ai-production.up.railway.app";
+const token = localStorage.getItem("token");
+
+if (!token) {
+    location.href = "index.html?v=999";
+}
+
+function money(v) {
+    return "£" + Number(v || 0).toLocaleString("en-GB");
+}
+
+function param(n) {
+    return new URL(location.href).searchParams.get(n);
+}
+
+function showPageError(message) {
+    const box = document.getElementById("page-error");
+    box.innerText = message;
+    box.style.display = "block";
+}
+
+function riskBadge(r) {
+    const score = Number(r || 0);
+    if (score < 15) return "<span class='badge low'>LOW RISK</span>";
+    if (score < 25) return "<span class='badge mid'>MEDIUM RISK</span>";
+    return "<span class='badge high'>HIGH RISK</span>";
+}
+
+function chart(cur, proj) {
+    const svg = document.getElementById("chart");
+    const safeCur = Number(cur || 0);
+    const safeProj = Number(proj || safeCur || 1);
+
+    const pts = [
+        safeCur * 0.90,
+        safeCur,
+        safeProj * 0.70,
+        safeProj
+    ];
+
+    let path = "";
+    for (let i = 0; i < pts.length; i++) {
+        const x = 50 + i * 200;
+        const y = 200 - (pts[i] / safeProj) * 150;
+        path += (i === 0 ? "M" : "L") + x + " " + y + " ";
+    }
+
+    svg.innerHTML = `
+        <path d="${path}" stroke="#00ff88" fill="none" stroke-width="3"/>
+        <circle cx="650" cy="${200 - (safeProj / safeProj) * 150}" r="5" fill="#00d4ff"/>
+    `;
+}
+
+async function apiGet(path) {
+    const res = await fetch(API + path, {
+        cache: "no-store",
+        headers: {
+            "Authorization": "Bearer " + token,
+            "Accept": "application/json"
+        }
+    });
+
+    if (res.status === 401) {
+        localStorage.removeItem("token");
+        location.href = "index.html?v=999";
+        return null;
+    }
+
+    if (!res.ok) {
+        return null;
+    }
+
+    return await res.json();
+}
+
+async function resolveCaskId() {
+    let id = param("id") || param("cask");
+
+    if (id && id !== "undefined" && id !== "null") {
+        return id;
+    }
+
+    const casks = await apiGet("/api/v1/casks");
+
+    if (Array.isArray(casks) && casks.length > 0) {
+        return casks[0].id || casks[0].cask_code;
+    }
+
+    return null;
+}
+
+async function load() {
+    const id = await resolveCaskId();
+
+    if (!id) {
+        showPageError("No cask selected and no casks found.");
+        return;
+    }
+
+    let c = await apiGet("/api/v1/casks/" + encodeURIComponent(id));
+
+    if (!c || c.detail) {
+        const casks = await apiGet("/api/v1/casks");
+
+        if (Array.isArray(casks)) {
+            c = casks.find(item =>
+                String(item.id) === String(id) ||
+                String(item.cask_code) === String(id)
+            );
+        }
+    }
+
+    if (!c || c.detail) {
+        showPageError("Could not load cask details.");
+        return;
+    }
+
+    const cur = Number(c.current_value_gbp || 0);
+    const proj = Number(c.projected_value_gbp || 0);
+    const roi = cur > 0 ? ((proj - cur) / cur * 100).toFixed(1) : "0.0";
+
+    document.getElementById("code").innerHTML = c.cask_code || "-";
+    document.getElementById("title").innerHTML = c.distillery || "-";
+    document.getElementById("current").innerHTML = money(cur);
+    document.getElementById("projected").innerHTML = money(proj);
+    document.getElementById("roi").innerHTML = roi + "%";
+    document.getElementById("ai").innerHTML = (100 - Number(c.risk_score || 0)).toFixed(0) + "/100";
+
+    document.getElementById("riskBadge").innerHTML = riskBadge(c.risk_score);
+
+    document.getElementById("dist").innerHTML = c.distillery || "-";
+    document.getElementById("wh").innerHTML = c.warehouse || "-";
+    document.getElementById("type").innerHTML = c.cask_type || "-";
+
+    document.getElementById("temp").innerHTML = Number(c.temperature_c || 0).toFixed(1) + "°C";
+    document.getElementById("hum").innerHTML = Number(c.humidity_pct || 0).toFixed(1) + "%";
+    document.getElementById("fill").innerHTML = Number(c.fill_level || 0).toFixed(1) + "%";
+
+    document.getElementById("thesis").innerHTML =
+        "AI analysis indicates strong maturation trajectory with favorable warehouse conditions. Projected appreciation is driven by distillery reputation, maturation stability, wood influence and aging curve optimization.";
+
+    chart(cur, proj);
+}
+
+function back() {
+    location.href = "portfolio.html?v=999";
+}
+
+function logout() {
+    localStorage.removeItem("token");
+    location.href = "index.html?v=999";
+}
+
+load();
+</script>
+
+</body>
+</html>

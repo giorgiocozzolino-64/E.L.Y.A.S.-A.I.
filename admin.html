@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>E.L.Y.A.S.-A.I. Admin Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: radial-gradient(circle at top, #172044 0%, #071225 45%, #0a0e27 100%);
+    color: white;
+}
+
+.app {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+    background: rgba(5, 9, 24, .96);
+    border-right: 1px solid rgba(255,255,255,.08);
+    padding: 22px 16px;
+}
+
+.brand {
+    margin-bottom: 30px;
+    padding: 0 8px;
+}
+
+.brand-title {
+    color: #00d4ff;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.brand-subtitle {
+    margin-top: 5px;
+    color: #7f8aad;
+    font-size: 12px;
+}
+
+.nav-title {
+    margin: 26px 10px 10px;
+    color: #53607f;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.nav a {
+    display: block;
+    padding: 12px 14px;
+    margin-bottom: 6px;
+    color: #b8c2e0;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.nav a:hover,
+.nav a.active {
+    background: rgba(0, 212, 255, .10);
+    color: white;
+}
+
+/* MAIN */
+.main {
+    min-width: 0;
+}
+
+.topbar {
+    min-height: 72px;
+    background: rgba(8, 13, 34, .88);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 34px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(12px);
+}
+
+.topbar-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.topbar-subtitle {
+    font-size: 12px;
+    color: #7f8aad;
+    margin-top: 4px;
+}
+
+.topbar-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.container {
+    padding: 36px;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 34px;
+}
+
+.kicker {
+    color: #00d4ff;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 38px;
+    font-weight: 300;
+}
+
+.description {
+    margin-top: 10px;
+    color: #9fb3d9;
+    max-width: 850px;
+    line-height: 1.5;
+}
+
+button,
+.button-link {
+    background: linear-gradient(135deg, #00d4ff, #0099cc);
+    color: #061022;
+    border: 0;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+}
+
+.button-secondary {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    color: white;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 28px;
+}
+
+.card {
+    background: rgba(17, 34, 74, .88);
+    border: 1px solid rgba(255,255,255,.08);
+    padding: 24px;
+    border-radius: 14px;
+    box-shadow: 0 14px 34px rgba(0,0,0,.16);
+}
+
+.card h2 {
+    margin-top: 0;
+    color: #9fb3d9;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+}
+
+.value {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.section {
+    margin-top: 28px;
+    background: rgba(17, 34, 74, .88);
+    border: 1px solid rgba(255,255,255,.08);
+    padding: 24px;
+    border-radius: 14px;
+    box-shadow: 0 14px 34px rgba(0,0,0,.16);
+}
+
+.section h2 {
+    margin-top: 0;
+}
+
+.row {
+    padding: 13px 0;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    line-height: 1.55;
+}
+
+.row:last-child {
+    border-bottom: 0;
+}
+
+.code {
+    color: #00d4ff;
+    font-weight: bold;
+    font-family: "Courier New", monospace;
+}
+
+.error {
+    color: #ff5252;
+    margin-top: 20px;
+    padding: 14px 0;
+}
+
+.version {
+    position: fixed;
+    bottom: 10px;
+    right: 12px;
+    color: #44506e;
+    font-size: 12px;
+}
+
+@media(max-width: 1100px) {
+    .app {
+        grid-template-columns: 1fr;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar,
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .container {
+        padding: 22px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-title">E.L.Y.A.S.-A.I.</div>
+            <div class="brand-subtitle">Spirits Tech Terminal</div>
+        </div>
+
+        <div class="nav">
+            <div class="nav-title">Platform</div>
+            <a href="portfolio.html?v=999">📊 Dashboard</a>
+            <a href="cask-detail.html?v=999">🥃 Cask Monitoring</a>
+            <a href="marketplace.html?v=999">📈 Whisky Exchange</a>
+            <a href="transactions.html?v=999">💳 Transactions</a>
+            <a href="investor-dashboard.html?v=999">💼 Investor View</a>
+            <a class="active" href="admin.html?v=999">⚙️ Admin</a>
+
+            <div class="nav-title">Business Lines</div>
+            <a href="marketplace.html?v=999#cask-exchange">🏛️ Cask Exchange</a>
+            <a href="marketplace.html?v=999#bottle-exchange">🍾 Bottle Exchange</a>
+            <a href="marketplace.html?v=999#shop">🛒 Distillery Shop</a>
+            <a href="marketplace.html?v=999#b2b">🤝 B2B / B2C</a>
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+            <div>
+                <div class="topbar-title">Admin Control Center</div>
+                <div class="topbar-subtitle">Users · casks · AUM · platform operations</div>
+            </div>
+
+            <div class="topbar-actions">
+                <a class="button-link button-secondary" href="portfolio.html?v=999">Portfolio</a>
+                <a class="button-link button-secondary" href="marketplace.html?v=999">Marketplace</a>
+                <a class="button-link button-secondary" href="transactions.html?v=999">Transactions</a>
+                <button onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <div class="page-header">
+                <div>
+                    <div class="kicker">Backoffice</div>
+                    <h1>E.L.Y.A.S.-A.I. Admin Dashboard</h1>
+                    <div class="description">
+                        Manage platform users, monitored casks, asset values and operational data
+                        across SaaS, exchange, marketplace and distillery-direct commerce.
+                    </div>
+                </div>
+
+                <a class="button-link" href="marketplace.html?v=999">Open Marketplace →</a>
+            </div>
+
+            <div id="error" class="error"></div>
+
+            <div class="grid">
+                <div class="card">
+                    <h2>Total Users</h2>
+                    <div id="total-users" class="value">...</div>
+                </div>
+
+                <div class="card">
+                    <h2>Total Casks</h2>
+                    <div id="total-casks" class="value">...</div>
+                </div>
+
+                <div class="card">
+                    <h2>Total AUM</h2>
+                    <div id="total-aum" class="value">...</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Users</h2>
+                <div id="users-list">Loading...</div>
+            </div>
+
+            <div class="section">
+                <h2>Casks</h2>
+                <div id="casks-list">Loading...</div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<div class="version">admin v1 linked</div>
+
+<script>
+const API_BASE = "https://elyas-ai-production.up.railway.app/api/v1";
+const token = localStorage.getItem("token");
+
+if (!token) {
+    window.location.href = "index.html?v=999";
+}
+
+function logout(){
+    localStorage.removeItem("token");
+    window.location.href = "index.html?v=999";
+}
+
+function goPortfolio(){
+    window.location.href = "portfolio.html?v=999";
+}
+
+function money(v){
+    return "£" + Number(v || 0).toLocaleString("en-GB");
+}
+
+async function apiGet(path){
+    const res = await fetch(API_BASE + path, {
+        cache:"no-store",
+        headers:{
+            "Authorization":"Bearer " + token,
+            "Accept":"application/json"
+        }
+    });
+
+    if (res.status === 401 || res.status === 403) {
+        document.getElementById("error").innerText =
+            "Admin access required. Login as admin@elyas-ai.com";
+        return null;
+    }
+
+    if (!res.ok) {
+        document.getElementById("error").innerText =
+            "API error: " + res.status;
+        return null;
+    }
+
+    return await res.json();
+}
+
+async function loadAdmin(){
+    const users = await apiGet("/admin/users");
+    const casks = await apiGet("/admin/casks");
+
+    if (!users || !casks) return;
+
+    document.getElementById("total-users").innerText = users.length;
+    document.getElementById("total-casks").innerText = casks.length;
+
+    let total = 0;
+    casks.forEach(c => total += Number(c.current_value_gbp || 0));
+    document.getElementById("total-aum").innerText = money(total);
+
+    let usersHtml = "";
+    users.forEach(u => {
+        usersHtml += `
+            <div class="row">
+                <b>ID:</b> ${u.id} |
+                <b>Email:</b> ${u.email} |
+                <b>Name:</b> ${u.full_name || "-"} |
+                <b>Role:</b> ${u.role}
+            </div>
+        `;
+    });
+    document.getElementById("users-list").innerHTML = usersHtml;
+
+    let casksHtml = "";
+    casks.forEach(c => {
+        casksHtml += `
+            <div class="row">
+                <div class="code">${c.cask_code}</div>
+                <b>${c.distillery}</b><br>
+                Owner ID: ${c.owner_id || "-"} |
+                Current: ${money(c.current_value_gbp)} |
+                Projected: ${money(c.projected_value_gbp)}
+            </div>
+        `;
+    });
+    document.getElementById("casks-list").innerHTML = casksHtml;
+}
+
+loadAdmin();
+</script>
+
+</body>
+</html>

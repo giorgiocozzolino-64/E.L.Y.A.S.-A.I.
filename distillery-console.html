@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>E.L.Y.A.S.-A.I. Distillery Console</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:radial-gradient(circle at top,#172044 0%,#071225 45%,#050817 100%);
+    color:white;
+}
+.app{
+    display:grid;
+    grid-template-columns:270px 1fr;
+    min-height:100vh;
+}
+.sidebar{
+    background:rgba(5,9,24,.96);
+    border-right:1px solid rgba(255,255,255,.08);
+    padding:24px 18px;
+}
+.brand-title{
+    color:#00d4ff;
+    font-size:22px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+.brand-subtitle{
+    margin-top:6px;
+    color:#7f8aad;
+    font-size:12px;
+}
+.nav-title{
+    margin:28px 8px 10px;
+    color:#53607f;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    font-weight:bold;
+}
+.nav a{
+    display:block;
+    padding:12px 14px;
+    margin-bottom:7px;
+    color:#b8c2e0;
+    text-decoration:none;
+    border-radius:10px;
+    font-size:14px;
+}
+.nav a:hover,.nav a.active{
+    background:rgba(0,212,255,.10);
+    color:white;
+}
+.main{min-width:0}
+.topbar{
+    min-height:74px;
+    background:rgba(8,13,34,.88);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 34px;
+    position:sticky;
+    top:0;
+    z-index:10;
+    backdrop-filter:blur(12px);
+}
+.topbar-title{font-size:18px;font-weight:bold}
+.topbar-subtitle{font-size:12px;color:#7f8aad;margin-top:4px}
+.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+button,.btn{
+    background:linear-gradient(135deg,#00d4ff,#0099cc);
+    color:#061022;
+    border:0;
+    padding:10px 16px;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-block;
+    font-size:13px;
+}
+.btn.secondary,button.secondary{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);
+    color:white;
+}
+.container{padding:34px}
+.hero{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:24px;
+    margin-bottom:24px;
+}
+.kicker{
+    color:#00d4ff;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:1.4px;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+h1{
+    margin:0;
+    font-size:42px;
+    font-weight:300;
+}
+.description{
+    margin-top:10px;
+    color:#9fb3d9;
+    max-width:980px;
+    line-height:1.55;
+}
+.live-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:rgba(0,255,156,.1);
+    border:1px solid rgba(0,255,156,.35);
+    color:#00ff9c;
+    border-radius:999px;
+    padding:8px 12px;
+    font-size:12px;
+    font-weight:bold;
+}
+.pulse{
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:#00ff9c;
+    box-shadow:0 0 16px #00ff9c;
+    animation:pulse 1.2s infinite;
+}
+@keyframes pulse{
+    0%{opacity:.4;transform:scale(.9)}
+    50%{opacity:1;transform:scale(1.25)}
+    100%{opacity:.4;transform:scale(.9)}
+}
+.metrics{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:14px;
+    margin-bottom:24px;
+}
+.metric{
+    background:rgba(17,34,74,.88);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;
+    padding:18px;
+}
+.metric-label{
+    color:#9fb3d9;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.8px;
+    margin-bottom:9px;
+}
+.metric-value{
+    font-size:24px;
+    font-weight:bold;
+}
+.positive{color:#00ff9c}
+.negative{color:#ff5252}
+.gold{color:#ffcc00}
+.cyan{color:#00d4ff}
+.layout{
+    display:grid;
+    grid-template-columns:1.2fr .8fr;
+    gap:22px;
+}
+.panel{
+    background:rgba(17,34,74,.88);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:16px;
+    padding:24px;
+    box-shadow:0 14px 34px rgba(0,0,0,.18);
+}
+.panel h2{margin-top:0}
+.modules{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+}
+.module{
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;
+    padding:18px;
+}
+.module:hover{
+    border-color:rgba(0,212,255,.35);
+}
+.module-icon{
+    font-size:24px;
+    margin-bottom:10px;
+}
+.module h3{
+    margin:0 0 8px;
+}
+.module p{
+    margin:0;
+    color:#9fb3d9;
+    font-size:13px;
+    line-height:1.45;
+}
+.module-actions{
+    margin-top:15px;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+.erp{
+    border:1px solid rgba(255,204,0,.34);
+    background:linear-gradient(180deg,rgba(255,204,0,.10),rgba(17,34,74,.88));
+}
+.monitoring{
+    border:1px solid rgba(0,212,255,.35);
+    background:linear-gradient(180deg,rgba(0,212,255,.10),rgba(17,34,74,.88));
+}
+.row{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    gap:10px;
+    padding:12px 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    font-size:13px;
+}
+.row.header{
+    color:#9fb3d9;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.8px;
+    font-weight:bold;
+}
+.sync-row{
+    display:grid;
+    grid-template-columns:1.15fr .8fr .8fr .6fr;
+    gap:10px;
+    padding:12px 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    font-size:13px;
+}
+.sync-row.header{
+    color:#9fb3d9;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.8px;
+    font-weight:bold;
+}
+.badge{
+    display:inline-block;
+    padding:6px 9px;
+    border-radius:999px;
+    background:rgba(0,212,255,.08);
+    border:1px solid rgba(0,212,255,.28);
+    color:#00d4ff;
+    font-size:11px;
+    font-weight:bold;
+    text-transform:uppercase;
+}
+.badge.good{
+    color:#00ff9c;
+    border-color:rgba(0,255,156,.35);
+    background:rgba(0,255,156,.08);
+}
+.badge.warn{
+    color:#ffcc00;
+    border-color:rgba(255,204,0,.35);
+    background:rgba(255,204,0,.08);
+}
+.badge.error{
+    color:#ff8080;
+    border-color:rgba(255,82,82,.35);
+    background:rgba(255,82,82,.08);
+}
+.feed-item{
+    padding:12px 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    color:#c7d2fe;
+    font-size:13px;
+}
+.feed-item b{color:white}
+.split{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+    margin-top:22px;
+}
+.progress{
+    height:9px;
+    background:rgba(255,255,255,.08);
+    border-radius:99px;
+    overflow:hidden;
+    margin-top:8px;
+}
+.progress div{
+    height:100%;
+    background:linear-gradient(90deg,#00d4ff,#00ff9c);
+}
+.version{
+    position:fixed;
+    right:12px;
+    bottom:10px;
+    color:#44506e;
+    font-size:12px;
+}
+@media(max-width:1200px){
+    .app{grid-template-columns:1fr}
+    .hero,.topbar{flex-direction:column;align-items:flex-start}
+    .metrics,.layout,.modules,.split{grid-template-columns:1fr}
+    .container{padding:22px}
+    .row,.sync-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+    <div class="brand-title">E.L.Y.A.S.-A.I.</div>
+    <div class="brand-subtitle">Distillery Console</div>
+
+    <div class="nav">
+        <div class="nav-title">Platform</div>
+        <a href="platform.html?v=1">🏠 Platform Home</a>
+        <a class="active" href="distillery-console.html?v=1">🏭 Distillery Console</a>
+        <a href="marketplace.html?v=999">📈 Exchange</a>
+        <a href="transactions.html?v=999">💳 Transactions</a>
+
+        <div class="nav-title">Distillery Tools</div>
+        <a href="#warehouse">Warehouse</a>
+        <a href="#production">Production</a>
+        <a href="#releases">Bottle Releases</a>
+        <a href="#erp">Oracle NetSuite ERP</a>
+        <a href="#monitoring">Cask Monitoring</a>
+
+        <div class="nav-title">Engines</div>
+        <a href="live-engine-demo.html?v=1">📡 Live Market Engine</a>
+        <a href="market-engine-demo.html?v=7">⚡ Execution Engine</a>
+    </div>
+</aside>
+
+<main class="main">
+
+<div class="topbar">
+    <div>
+        <div class="topbar-title">Distillery Operating Console</div>
+        <div class="topbar-subtitle">Warehouse · production · direct sales · NetSuite ERP · Leonardo Black Box</div>
+    </div>
+
+    <div class="actions">
+        <a class="btn secondary" href="platform.html?v=1">Platform</a>
+        <a class="btn secondary" href="marketplace.html?v=999#shop">Distillery Shop</a>
+        <a class="btn secondary" href="cask-detail.html?v=999">Monitoring</a>
+        <button onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<div class="container">
+
+    <section class="hero">
+        <div>
+            <div class="kicker">Distillery Direct Infrastructure</div>
+            <h1>Distillery Console</h1>
+            <div class="description">
+                Control warehouse inventory, production batches, cask lifecycle, bottle releases and direct-to-market sales. Oracle NetSuite ERP is integrated as the operational finance and inventory system behind the E.L.Y.A.S. spirits asset platform.
+            </div>
+        </div>
+        <div class="live-badge"><span class="pulse"></span> DISTILLERY LIVE</div>
+    </section>
+
+    <section class="metrics">
+        <div class="metric">
+            <div class="metric-label">Warehouse Casks</div>
+            <div class="metric-value">8,420</div>
+            <div class="positive">▲ +84 filled this month</div>
+        </div>
+        <div class="metric">
+            <div class="metric-label">LBB Devices</div>
+            <div class="metric-value">1,284</div>
+            <div class="gold">Telemetry active</div>
+        </div>
+        <div class="metric">
+            <div class="metric-label">Direct Shop Revenue</div>
+            <div class="metric-value">£312K</div>
+            <div class="positive">▲ +18.6%</div>
+        </div>
+        <div class="metric">
+            <div class="metric-label">ERP Sync Status</div>
+            <div class="metric-value positive">HEALTHY</div>
+            <div>NetSuite queue: 4</div>
+        </div>
+        <div class="metric">
+            <div class="metric-label">Release Pipeline</div>
+            <div class="metric-value">17</div>
+            <div class="cyan">Next 90 days</div>
+        </div>
+    </section>
+
+    <section class="layout">
+
+        <div class="panel">
+            <h2>Distillery Operating Modules</h2>
+            <p class="description">A single console for production, inventory, market access and verified monitoring.</p>
+
+            <div class="modules">
+
+                <div class="module monitoring" id="monitoring">
+                    <div class="module-icon">🥃</div>
+                    <h3>Cask Monitoring Extension</h3>
+                    <p>Warehouse-level Leonardo Black Box telemetry, environmental monitoring, fill-level alerts and AI maturation analysis.</p>
+                    <div class="module-actions">
+                        <a class="btn" href="cask-detail.html?v=999">Open Monitoring</a>
+                        <a class="btn secondary" href="#warehouse">Warehouse</a>
+                    </div>
+                </div>
+
+                <div class="module erp" id="erp">
+                    <div class="module-icon">🧾</div>
+                    <h3>Oracle NetSuite ERP Sync</h3>
+                    <p>Sync inventory, production batches, sales orders, invoices, revenue and commission accounting via backend connector.</p>
+                    <div class="module-actions">
+                        <button onclick="simulateSync()">Run ERP Sync</button>
+                        <button class="secondary" onclick="showERPPlan()">Connector Plan</button>
+                    </div>
+                </div>
+
+                <div class="module" id="warehouse">
+                    <div class="module-icon">🏚️</div>
+                    <h3>Warehouse Inventory</h3>
+                    <p>Track cask location, warehouse zone, type, age, fill level and monitoring status across all sites.</p>
+                    <div class="module-actions">
+                        <a class="btn" href="#warehouseTable">View Inventory</a>
+                    </div>
+                </div>
+
+                <div class="module" id="production">
+                    <div class="module-icon">⚗️</div>
+                    <h3>Production Batches</h3>
+                    <p>Manage new make spirit, filling dates, batch IDs, wood policy and lifecycle milestones.</p>
+                    <div class="module-actions">
+                        <a class="btn" href="#productionTable">View Batches</a>
+                    </div>
+                </div>
+
+                <div class="module" id="releases">
+                    <div class="module-icon">🍾</div>
+                    <h3>Bottle Releases</h3>
+                    <p>Prepare direct-to-market bottle drops, allocations, private offers and marketplace releases.</p>
+                    <div class="module-actions">
+                        <a class="btn" href="marketplace.html?v=999#shop">Open Shop</a>
+                    </div>
+                </div>
+
+                <div class="module">
+                    <div class="module-icon">📈</div>
+                    <h3>Direct Market Access</h3>
+                    <p>List verified casks and bottles directly on E.L.Y.A.S. without losing control to opaque intermediaries.</p>
+                    <div class="module-actions">
+                        <a class="btn" href="marketplace.html?v=999">Open Exchange</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <aside class="panel erp">
+            <h2>Oracle NetSuite ERP Layer</h2>
+            <p class="description">
+                NetSuite remains the source of truth for accounting, inventory, sales orders and invoices. E.L.Y.A.S. acts as the asset intelligence, monitoring and market-access layer.
+            </p>
+
+            <div class="feed-item"><b>Integration Pattern:</b> Frontend → E.L.Y.A.S API → NetSuite Connector → Oracle NetSuite.</div>
+            <div class="feed-item"><b>Security:</b> Credentials stay in backend environment variables, never in browser code.</div>
+            <div class="feed-item"><b>Sync Mode:</b> Queue-based sync for inventory, orders, invoices and commission entries.</div>
+            <div class="feed-item"><b>Future:</b> SuiteTalk REST Web Services + OAuth 2.0 backend connector.</div>
+
+            <div style="margin-top:18px;">
+                <div class="metric-label">ERP Connector Readiness</div>
+                <div class="progress"><div id="erpProgress" style="width:72%"></div></div>
+                <div id="erpStatus" class="positive" style="margin-top:10px;">Ready for backend connector design</div>
+            </div>
+        </aside>
+
+    </section>
+
+    <section class="split">
+
+        <div class="panel" id="warehouseTable">
+            <h2>Warehouse Inventory</h2>
+
+            <div class="row header">
+                <div>Cask</div>
+                <div>Warehouse</div>
+                <div>Status</div>
+                <div>Telemetry</div>
+            </div>
+
+            <div class="row">
+                <div class="cyan">HH-2023-0847</div>
+                <div>WH-03 Islay</div>
+                <div><span class="badge good">Maturing</span></div>
+                <div class="positive">LBB Online</div>
+            </div>
+
+            <div class="row">
+                <div class="cyan">BN-2024-1205</div>
+                <div>WH-02 Mainland</div>
+                <div><span class="badge good">Maturing</span></div>
+                <div class="gold">Sync Pending</div>
+            </div>
+
+            <div class="row">
+                <div class="cyan">LP-2025-0332</div>
+                <div>WH-04 Islay</div>
+                <div><span class="badge warn">Sale Ready</span></div>
+                <div class="positive">LBB Online</div>
+            </div>
+
+            <div class="row">
+                <div class="cyan">MC-2022-2210</div>
+                <div>WH-01 Speyside</div>
+                <div><span class="badge error">Alert</span></div>
+                <div class="negative">Fill drift</div>
+            </div>
+        </div>
+
+        <div class="panel" id="productionTable">
+            <h2>Production Batches</h2>
+
+            <div class="row header">
+                <div>Batch</div>
+                <div>Spirit</div>
+                <div>Fill Date</div>
+                <div>ERP</div>
+            </div>
+
+            <div class="row">
+                <div class="cyan">BATCH-26-041</div>
+                <div>Peated New Make</div>
+                <div>May 2026</div>
+                <div><span class="badge good">Synced</span></div>
+            </div>
+
+            <div class="row">
+                <div class="cyan">BATCH-26-038</div>
+                <div>Sherry Program</div>
+                <div>Apr 2026</div>
+                <div><span class="badge warn">Queued</span></div>
+            </div>
+
+            <div class="row">
+                <div class="cyan">BATCH-26-033</div>
+                <div>Ex-Bourbon</div>
+                <div>Mar 2026</div>
+                <div><span class="badge good">Synced</span></div>
+            </div>
+
+            <div class="row">
+                <div class="cyan">BATCH-26-029</div>
+                <div>Quarter Cask</div>
+                <div>Feb 2026</div>
+                <div><span class="badge warn">Review</span></div>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="split">
+
+        <div class="panel">
+            <h2>NetSuite Sync Queue</h2>
+
+            <div class="sync-row header">
+                <div>Record</div>
+                <div>Module</div>
+                <div>Status</div>
+                <div>Action</div>
+            </div>
+
+            <div class="sync-row">
+                <div>Inventory Item: HH-2023-0847</div>
+                <div>Inventory</div>
+                <div><span class="badge good">Synced</span></div>
+                <div>View</div>
+            </div>
+
+            <div class="sync-row">
+                <div>Sales Order: SO-ELY-2048</div>
+                <div>Sales</div>
+                <div><span class="badge warn">Queued</span></div>
+                <div>Retry</div>
+            </div>
+
+            <div class="sync-row">
+                <div>Invoice: INV-ELY-9142</div>
+                <div>Accounting</div>
+                <div><span class="badge good">Synced</span></div>
+                <div>View</div>
+            </div>
+
+            <div class="sync-row">
+                <div>Commission Journal: CJ-0526-18</div>
+                <div>Revenue</div>
+                <div><span class="badge warn">Pending</span></div>
+                <div>Post</div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>Distillery AI Feed</h2>
+            <div id="aiFeed">
+                <div class="feed-item"><b>AI:</b> Warehouse WH-04 shows optimal humidity stability for quarter casks.</div>
+                <div class="feed-item"><b>AI:</b> Release pipeline suggests 3 bottle drops suitable for direct allocation.</div>
+                <div class="feed-item"><b>ERP:</b> 4 NetSuite records queued for backend sync.</div>
+                <div class="feed-item"><b>Monitoring:</b> One Speyside cask requires fill-level review.</div>
+            </div>
+        </div>
+
+    </section>
+
+</div>
+
+</main>
+</div>
+
+<div class="version">distillery-console v1 netsuite</div>
+
+<script src="assets/js/api-client.js"></script>
+<script>
+const token = localStorage.getItem("token");
+
+if (!token) {
+    window.location.href = "index.html?v=999";
+}
+
+function logout(){
+    localStorage.removeItem("token");
+    window.location.href = "index.html?v=999";
+}
+
+function simulateSync(){
+    const status = document.getElementById("erpStatus");
+    const progress = document.getElementById("erpProgress");
+
+    status.innerText = "Running NetSuite sync queue...";
+    status.className = "gold";
+    progress.style.width = "88%";
+
+    setTimeout(function(){
+        status.innerText = "ERP sync completed. 4 records processed.";
+        status.className = "positive";
+        progress.style.width = "100%";
+        addFeed("<b>ERP:</b> NetSuite sync simulation completed successfully.");
+    }, 1400);
+}
+
+function showERPPlan(){
+    alert(
+        "NetSuite Connector Plan:\\n\\n" +
+        "1. Backend-only credentials\\n" +
+        "2. OAuth 2.0 / SuiteTalk REST connector\\n" +
+        "3. Queue-based sync jobs\\n" +
+        "4. Inventory, sales orders, invoices, commissions\\n" +
+        "5. Error retries and audit logs"
+    );
+}
+
+function addFeed(html){
+    const feed = document.getElementById("aiFeed");
+    const div = document.createElement("div");
+    div.className = "feed-item";
+    div.innerHTML = html;
+    feed.prepend(div);
+    while(feed.children.length > 7){
+        feed.removeChild(feed.lastChild);
+    }
+}
+
+setInterval(function(){
+    const items = [
+        "<b>AI:</b> Cask MC-2022-2210 remains outside expected fill curve.",
+        "<b>ERP:</b> New inventory update queued for NetSuite.",
+        "<b>Market:</b> Direct shop buyer interest rising for sherry releases.",
+        "<b>Monitoring:</b> Warehouse WH-03 temperature stable within ±0.2°C.",
+        "<b>Release:</b> AI recommends private allocation before public bottle drop."
+    ];
+    addFeed(items[Math.floor(Math.random() * items.length)]);
+}, 5500);
+</script>
+
+</body>
+</html>

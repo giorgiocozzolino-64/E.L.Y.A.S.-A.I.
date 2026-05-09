@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>E.L.Y.A.S.-A.I. Market Execution Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: radial-gradient(circle at top, #172044 0%, #071225 45%, #050817 100%);
+    color: white;
+    padding: 30px;
+}
+
+h1 {
+    font-size: 42px;
+    font-weight: 300;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 20px;
+}
+
+.card {
+    background: rgba(17, 34, 74, .88);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 14px;
+    padding: 22px;
+    margin-top: 18px;
+}
+
+label {
+    display: block;
+    margin-top: 12px;
+    color: #9fb3d9;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(5, 8, 23, .75);
+    color: white;
+}
+
+button {
+    margin-top: 16px;
+    width: 100%;
+    padding: 13px;
+    border-radius: 8px;
+    border: 0;
+    background: linear-gradient(135deg, #00d4ff, #0099cc);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button.sell {
+    background: linear-gradient(135deg, #ff5252, #b71c1c);
+    color: white;
+}
+
+.engine-book-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #00d4ff;
+}
+
+.engine-book-meta {
+    color: #9fb3d9;
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.engine-book-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.engine-col-title {
+    font-size: 12px;
+    color: #9fb3d9;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+}
+
+.engine-row,
+.engine-trade-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.engine-trade-row {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.bid {
+    color: #00ff9c;
+}
+
+.ask {
+    color: #ff8080;
+}
+
+.engine-empty {
+    color: #9fb3d9;
+    padding: 12px 0;
+}
+
+.status {
+    margin-top: 14px;
+    color: #00ff9c;
+}
+
+@media(max-width:900px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<h1>E.L.Y.A.S.-A.I. Market Execution Engine</h1>
+<p>Frontend matching demo: place bid/ask orders and watch automatic matching.</p>
+
+<div class="layout">
+    <main>
+        <div class="card">
+            <h2>Order Book</h2>
+            <select id="symbolSelect" onchange="refresh()"></select>
+            <div id="orderBook"></div>
+        </div>
+
+        <div class="card">
+            <h2>Executed Trades</h2>
+            <div id="trades"></div>
+        </div>
+    </main>
+
+    <aside class="card">
+        <h2>Place Order</h2>
+
+        <label>Side</label>
+        <select id="side">
+            <option value="BUY">BUY</option>
+            <option value="SELL">SELL</option>
+        </select>
+
+        <label>Symbol</label>
+        <input id="symbol" value="CASK-1">
+
+        <label>Asset Name</label>
+        <input id="assetName" value="Ardbeg 2023 Oloroso">
+
+        <label>Price</label>
+        <input id="price" type="number" value="46200">
+
+        <label>Quantity</label>
+        <input id="quantity" type="number" value="1">
+
+        <button onclick="place()">Place Order</button>
+        <button class="sell" onclick="resetEngine()">Reset Engine</button>
+
+        <div id="status" class="status"></div>
+    </aside>
+</div>
+
+<script src="assets/js/market-engine.js"></script>
+
+<script>
+function populateSymbols() {
+    const select = document.getElementById("symbolSelect");
+    const symbols = ELYASMarketExecution.getSymbols();
+
+    select.innerHTML = symbols.map(s => `
+        <option value="${s.symbol}">${s.symbol} — ${s.assetName}</option>
+    `).join("");
+
+    if (!select.value && symbols.length) {
+        select.value = symbols[0].symbol;
+    }
+}
+
+function refresh() {
+    populateSymbols();
+
+    const symbol = document.getElementById("symbolSelect").value || "CASK-1";
+
+    ELYASMarketExecution.renderOrderBook("#orderBook", symbol);
+    ELYASMarketExecution.renderTrades("#trades");
+}
+
+function place() {
+    const side = document.getElementById("side").value;
+    const symbol = document.getElementById("symbol").value.trim().toUpperCase();
+    const assetName = document.getElementById("assetName").value.trim();
+    const price = Number(document.getElementById("price").value);
+    const quantity = Number(document.getElementById("quantity").value);
+
+    const result = ELYASMarketExecution.placeOrder({
+        side,
+        symbol,
+        assetName,
+        price,
+        quantity,
+        owner: "Demo User"
+    });
+
+    document.getElementById("status").innerText =
+        result.matchResult.length
+            ? "Matched " + result.matchResult.length + " trade(s)."
+            : "Order placed.";
+
+    document.getElementById("symbolSelect").value = symbol;
+    refresh();
+}
+
+function resetEngine() {
+    ELYASMarketExecution.clearEngine();
+    document.getElementById("status").innerText = "Engine reset.";
+    refresh();
+}
+
+window.addEventListener("elyas:executionReady", refresh);
+window.addEventListener("elyas:orderMatched", refresh);
+window.addEventListener("elyas:ordersUpdated", refresh);
+window.addEventListener("elyas:tradesUpdated", refresh);
+</script>
+
+</body>
+</html>

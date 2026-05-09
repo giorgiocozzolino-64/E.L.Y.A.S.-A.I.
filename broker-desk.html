@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>E.L.Y.A.S.-A.I. Broker Desk</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:radial-gradient(circle at top,#172044 0%,#071225 45%,#050817 100%);
+    color:white;
+}
+.app{
+    display:grid;
+    grid-template-columns:270px 1fr;
+    min-height:100vh;
+}
+.sidebar{
+    background:rgba(5,9,24,.96);
+    border-right:1px solid rgba(255,255,255,.08);
+    padding:24px 18px;
+}
+.brand-title{
+    color:#00d4ff;
+    font-size:22px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+.brand-subtitle{
+    margin-top:6px;
+    color:#7f8aad;
+    font-size:12px;
+}
+.nav-title{
+    margin:28px 8px 10px;
+    color:#53607f;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    font-weight:bold;
+}
+.nav a{
+    display:block;
+    padding:12px 14px;
+    margin-bottom:7px;
+    color:#b8c2e0;
+    text-decoration:none;
+    border-radius:10px;
+    font-size:14px;
+}
+.nav a:hover,.nav a.active{
+    background:rgba(0,212,255,.10);
+    color:white;
+}
+.main{min-width:0}
+.topbar{
+    min-height:74px;
+    background:rgba(8,13,34,.88);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 34px;
+    position:sticky;
+    top:0;
+    z-index:10;
+    backdrop-filter:blur(12px);
+}
+.topbar-title{font-size:18px;font-weight:bold}
+.topbar-subtitle{font-size:12px;color:#7f8aad;margin-top:4px}
+.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+button,.btn{
+    background:linear-gradient(135deg,#00d4ff,#0099cc);
+    color:#061022;
+    border:0;
+    padding:10px 16px;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-block;
+    font-size:13px;
+}
+.btn.secondary,button.secondary{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);
+    color:white;
+}
+.container{padding:34px}
+.hero{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:24px;
+    margin-bottom:24px;
+}
+.kicker{
+    color:#00d4ff;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:1.4px;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+h1{
+    margin:0;
+    font-size:42px;
+    font-weight:300;
+}
+.description{
+    margin-top:10px;
+    color:#9fb3d9;
+    max-width:940px;
+    line-height:1.55;
+}
+.live-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:rgba(0,255,156,.1);
+    border:1px solid rgba(0,255,156,.35);
+    color:#00ff9c;
+    border-radius:999px;
+    padding:8px 12px;
+    font-size:12px;
+    font-weight:bold;
+}
+.pulse{
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:#00ff9c;
+    box-shadow:0 0 16px #00ff9c;
+    animation:pulse 1.2s infinite;
+}
+@keyframes pulse{
+    0%{opacity:.4;transform:scale(.9)}
+    50%{opacity:1;transform:scale(1.25)}
+    100%{opacity:.4;transform:scale(.9)}
+}
+.metrics{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:14px;
+    margin-bottom:24px;
+}
+.metric{
+    background:rgba(17,34,74,.88);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;
+    padding:18px;
+}
+.metric-label{
+    color:#9fb3d9;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.8px;
+    margin-bottom:9px;
+}
+.metric-value{
+    font-size:24px;
+    font-weight:bold;
+}
+.positive{color:#00ff9c}
+.negative{color:#ff5252}
+.gold{color:#ffcc00}
+.cyan{color:#00d4ff}
+.layout{
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    gap:22px;
+}
+.panel{
+    background:rgba(17,34,74,.88);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:16px;
+    padding:24px;
+    box-shadow:0 14px 34px rgba(0,0,0,.18);
+}
+.panel h2{margin-top:0}
+.client-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+}
+.client-card{
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;
+    padding:18px;
+    cursor:pointer;
+}
+.client-card:hover,.client-card.active{
+    border-color:rgba(0,212,255,.38);
+    background:rgba(0,212,255,.08);
+}
+.client-name{
+    font-size:18px;
+    font-weight:bold;
+}
+.client-meta{
+    margin-top:7px;
+    color:#9fb3d9;
+    font-size:13px;
+}
+.client-value{
+    margin-top:14px;
+    font-size:24px;
+    font-weight:bold;
+}
+.badge{
+    display:inline-block;
+    margin-top:10px;
+    padding:6px 9px;
+    border-radius:999px;
+    background:rgba(0,212,255,.08);
+    border:1px solid rgba(0,212,255,.28);
+    color:#00d4ff;
+    font-size:11px;
+    font-weight:bold;
+    text-transform:uppercase;
+}
+.row{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    gap:10px;
+    padding:12px 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    font-size:13px;
+}
+.row.header{
+    color:#9fb3d9;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.8px;
+    font-weight:bold;
+}
+.otc-card{
+    padding:14px;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:12px;
+    background:rgba(255,255,255,.04);
+    margin-bottom:12px;
+}
+.otc-title{font-weight:bold}
+.otc-meta{
+    margin-top:7px;
+    color:#9fb3d9;
+    font-size:13px;
+}
+.feed-item{
+    padding:12px 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    color:#c7d2fe;
+    font-size:13px;
+}
+.feed-item b{color:white}
+.split{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+    margin-top:22px;
+}
+.monitoring-box{
+    border:1px solid rgba(0,212,255,.35);
+    background:linear-gradient(180deg,rgba(0,212,255,.10),rgba(17,34,74,.88));
+}
+.version{
+    position:fixed;
+    right:12px;
+    bottom:10px;
+    color:#44506e;
+    font-size:12px;
+}
+@media(max-width:1200px){
+    .app{grid-template-columns:1fr}
+    .hero,.topbar{flex-direction:column;align-items:flex-start}
+    .metrics,.layout,.client-grid,.split{grid-template-columns:1fr}
+    .container{padding:22px}
+    .row{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+    <div class="brand-title">E.L.Y.A.S.-A.I.</div>
+    <div class="brand-subtitle">Broker Desk</div>
+
+    <div class="nav">
+        <div class="nav-title">Platform</div>
+        <a href="platform.html?v=1">🏠 Platform Home</a>
+        <a href="portfolio.html?v=999">📊 Portfolio</a>
+        <a class="active" href="broker-desk.html?v=1">🏦 Broker Desk</a>
+        <a href="marketplace.html?v=999">📈 Exchange</a>
+        <a href="transactions.html?v=999">💳 Transactions</a>
+
+        <div class="nav-title">Broker Tools</div>
+        <a href="#clients">Client Book</a>
+        <a href="#otc">OTC Deals</a>
+        <a href="#monitoring">Cask Monitoring</a>
+        <a href="#commissions">Commissions</a>
+
+        <div class="nav-title">Engines</div>
+        <a href="market-engine-demo.html?v=7">⚡ Execution Engine</a>
+        <a href="live-engine-demo.html?v=1">📡 Live Market Engine</a>
+    </div>
+</aside>
+
+<main class="main">
+
+<div class="topbar">
+    <div>
+        <div class="topbar-title">Broker Institutional Desk</div>
+        <div class="topbar-subtitle">Client casks · OTC flow · commissions · authorised monitoring</div>
+    </div>
+
+    <div class="actions">
+        <a class="btn secondary" href="platform.html?v=1">Platform</a>
+        <a class="btn secondary" href="marketplace.html?v=999">Exchange</a>
+        <a class="btn secondary" href="cask-detail.html?v=999">Monitoring</a>
+        <button onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<div class="container">
+
+    <section class="hero">
+        <div>
+            <div class="kicker">Institutional Broker Infrastructure</div>
+            <h1>Broker Desk</h1>
+            <div class="description">
+                Manage authorised client portfolios, prepare verified cask listings, route OTC demand, monitor Leonardo Black Box data and track broker commission flow without controlling investor independence.
+            </div>
+        </div>
+        <div class="live-badge"><span class="pulse"></span> BROKER DESK LIVE</div>
+    </section>
+
+    <section class="metrics">
+        <div class="metric">
+            <div class="metric-label">Managed AUM</div>
+            <div class="metric-value">£4.82M</div>
+            <div class="positive">▲ +8.4% QTD</div>
+        </div>
+        <div class="metric">
+            <div class="metric-label">Authorised Clients</div>
+            <div class="metric-value">38</div>
+            <div class="cyan">12 active today</div>
+        </div>
+        <div class="metric">
+            <div class="metric-label">Monitored Casks</div>
+            <div class="metric-value">214</div>
+            <div class="gold">LBB linked: 76</div>
+        </div>
+        <div class="metric">
+            <div class="metric-label">Pending OTC</div>
+            <div class="metric-value">£682K</div>
+            <div class="positive">9 open deals</div>
+        </div>
+        <div class="metric">
+            <div class="metric-label">Commission MTD</div>
+            <div class="metric-value">£18.4K</div>
+            <div class="positive">▲ +14.2%</div>
+        </div>
+    </section>
+
+    <section class="layout">
+
+        <div class="panel" id="clients">
+            <h2>Client Book</h2>
+            <p class="description">Authorised client portfolios with monitoring permissions and deal readiness.</p>
+
+            <div class="client-grid">
+                <div class="client-card active" onclick="selectClient('Highland Family Office', '£1.42M', '42 casks', 'LOW RISK')">
+                    <div class="client-name">Highland Family Office</div>
+                    <div class="client-meta">42 casks · 18 LBB linked · 6 open bids</div>
+                    <div class="client-value">£1.42M</div>
+                    <span class="badge">Low Risk</span>
+                </div>
+
+                <div class="client-card" onclick="selectClient('Islay Growth Fund', '£980K', '27 casks', 'ACTIVE OTC')">
+                    <div class="client-name">Islay Growth Fund</div>
+                    <div class="client-meta">27 casks · 9 LBB linked · 3 OTC offers</div>
+                    <div class="client-value">£980K</div>
+                    <span class="badge">Active OTC</span>
+                </div>
+
+                <div class="client-card" onclick="selectClient('Private Collector A12', '£612K', '14 casks', 'SELL READY')">
+                    <div class="client-name">Private Collector A12</div>
+                    <div class="client-meta">14 casks · 4 LBB linked · 2 sale-ready</div>
+                    <div class="client-value">£612K</div>
+                    <span class="badge">Sell Ready</span>
+                </div>
+
+                <div class="client-card" onclick="selectClient('Nordic Spirits Trust', '£1.81M', '58 casks', 'ACCUMULATING')">
+                    <div class="client-name">Nordic Spirits Trust</div>
+                    <div class="client-meta">58 casks · 24 LBB linked · accumulating Islay</div>
+                    <div class="client-value">£1.81M</div>
+                    <span class="badge">Accumulating</span>
+                </div>
+            </div>
+        </div>
+
+        <aside class="panel">
+            <h2 id="selectedClient">Highland Family Office</h2>
+            <p class="description" id="selectedClientMeta">£1.42M · 42 casks · LOW RISK</p>
+
+            <div class="feed-item"><b>AI Recommendation:</b> Prepare two Islay casks for exchange listing within 30 days.</div>
+            <div class="feed-item"><b>Monitoring Alert:</b> 1 cask has fill level drift beyond expected angel’s share curve.</div>
+            <div class="feed-item"><b>Liquidity Signal:</b> Bunnahabhain demand increasing among private buyers.</div>
+            <div class="feed-item"><b>Action:</b> Generate client portfolio report before month-end.</div>
+
+            <div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap;">
+                <a class="btn" href="cask-detail.html?v=999">Open Monitoring</a>
+                <a class="btn secondary" href="marketplace.html?v=999">List Asset</a>
+            </div>
+        </aside>
+
+    </section>
+
+    <section class="split">
+
+        <div class="panel" id="otc">
+            <h2>OTC Deal Flow</h2>
+
+            <div class="otc-card">
+                <div class="otc-title">Buyer seeks 20 Islay casks</div>
+                <div class="otc-meta">Budget: £1.1M · Preference: peated · Status: sourcing</div>
+                <span class="badge">Buyer Mandate</span>
+            </div>
+
+            <div class="otc-card">
+                <div class="otc-title">Private seller offers 1998 single cask release</div>
+                <div class="otc-meta">Ask: £184K · Verification: pending LBB + provenance</div>
+                <span class="badge">Seller Mandate</span>
+            </div>
+
+            <div class="otc-card">
+                <div class="otc-title">Institutional fund requests quarterly valuation</div>
+                <div class="otc-meta">Portfolio: 58 casks · Report due: 7 days</div>
+                <span class="badge">Reporting</span>
+            </div>
+        </div>
+
+        <div class="panel monitoring-box" id="monitoring">
+            <h2>Cask Monitoring Extension</h2>
+            <p class="description">
+                Brokers do not own the client asset. They access monitoring data only with authorisation and use it to prepare reports, exchange listings and client recommendations.
+            </p>
+
+            <div class="row header">
+                <div>Cask</div>
+                <div>Client</div>
+                <div>Score</div>
+                <div>Action</div>
+            </div>
+
+            <div class="row">
+                <div class="cyan">HH-2023-0847</div>
+                <div>Highland Family Office</div>
+                <div class="positive">87/100</div>
+                <div><a class="btn secondary" href="cask-detail.html?v=999">Open</a></div>
+            </div>
+
+            <div class="row">
+                <div class="cyan">BN-2024-1205</div>
+                <div>Private Collector A12</div>
+                <div class="gold">82/100</div>
+                <div><a class="btn secondary" href="cask-detail.html?v=999">Open</a></div>
+            </div>
+
+            <div class="row">
+                <div class="cyan">LP-2025-0332</div>
+                <div>Nordic Spirits Trust</div>
+                <div class="positive">79/100</div>
+                <div><a class="btn secondary" href="cask-detail.html?v=999">Open</a></div>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="split">
+
+        <div class="panel" id="commissions">
+            <h2>Commission Tracker</h2>
+
+            <div class="row header">
+                <div>Source</div>
+                <div>Amount</div>
+                <div>Status</div>
+                <div>Due</div>
+            </div>
+
+            <div class="row">
+                <div>Exchange Execution</div>
+                <div>£7,420</div>
+                <div class="positive">Paid</div>
+                <div>May 2026</div>
+            </div>
+
+            <div class="row">
+                <div>OTC Mandate</div>
+                <div>£8,100</div>
+                <div class="gold">Pending</div>
+                <div>May 2026</div>
+            </div>
+
+            <div class="row">
+                <div>Client Reporting</div>
+                <div>£2,900</div>
+                <div class="positive">Invoiced</div>
+                <div>June 2026</div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>Broker AI Feed</h2>
+            <div id="aiFeed">
+                <div class="feed-item"><b>AI:</b> Islay cask demand is rising versus warehouse average.</div>
+                <div class="feed-item"><b>AI:</b> Sherry oak premium widened by 1.2% this week.</div>
+                <div class="feed-item"><b>AI:</b> Client concentration risk detected in peated assets.</div>
+                <div class="feed-item"><b>AI:</b> Recommend portfolio rebalance for two clients.</div>
+            </div>
+        </div>
+
+    </section>
+
+</div>
+
+</main>
+</div>
+
+<div class="version">broker-desk v1</div>
+
+<script src="assets/js/api-client.js"></script>
+<script>
+const token = localStorage.getItem("token");
+
+if (!token) {
+    window.location.href = "index.html?v=999";
+}
+
+function logout(){
+    localStorage.removeItem("token");
+    window.location.href = "index.html?v=999";
+}
+
+function selectClient(name, value, casks, status){
+    document.querySelectorAll(".client-card").forEach(card => card.classList.remove("active"));
+    event.currentTarget.classList.add("active");
+
+    document.getElementById("selectedClient").innerText = name;
+    document.getElementById("selectedClientMeta").innerText =
+        value + " · " + casks + " · " + status;
+}
+
+setInterval(function(){
+    const items = [
+        "<b>AI:</b> New buyer interest detected for verified Islay casks.",
+        "<b>OTC:</b> Institutional buyer increased bid range by 2.4%.",
+        "<b>Monitoring:</b> One authorised cask improved maturation score.",
+        "<b>Liquidity:</b> Bottle market spread tightened in rare releases.",
+        "<b>Risk:</b> Client portfolio volatility remains below threshold."
+    ];
+
+    const feed = document.getElementById("aiFeed");
+    const div = document.createElement("div");
+    div.className = "feed-item";
+    div.innerHTML = items[Math.floor(Math.random() * items.length)];
+    feed.prepend(div);
+
+    while(feed.children.length > 6){
+        feed.removeChild(feed.lastChild);
+    }
+}, 5000);
+</script>
+
+</body>
+</html>

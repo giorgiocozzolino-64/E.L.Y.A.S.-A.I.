@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>E.L.Y.A.S.-A.I. Transactions</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: radial-gradient(circle at top, #172044 0%, #071225 45%, #0a0e27 100%);
+    color: white;
+}
+
+.app {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+    background: rgba(5, 9, 24, .96);
+    border-right: 1px solid rgba(255,255,255,.08);
+    padding: 22px 16px;
+}
+
+.brand {
+    margin-bottom: 30px;
+    padding: 0 8px;
+}
+
+.brand-title {
+    color: #00d4ff;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.brand-subtitle {
+    margin-top: 5px;
+    color: #7f8aad;
+    font-size: 12px;
+}
+
+.nav-title {
+    margin: 26px 10px 10px;
+    color: #53607f;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+.nav a {
+    display: block;
+    padding: 12px 14px;
+    margin-bottom: 6px;
+    color: #b8c2e0;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.nav a:hover,
+.nav a.active {
+    background: rgba(0, 212, 255, .10);
+    color: white;
+}
+
+/* MAIN */
+.main {
+    min-width: 0;
+}
+
+.topbar {
+    min-height: 72px;
+    background: rgba(8, 13, 34, .88);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 34px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(12px);
+}
+
+.topbar-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.topbar-subtitle {
+    font-size: 12px;
+    color: #7f8aad;
+    margin-top: 4px;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.container {
+    padding: 36px;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 34px;
+}
+
+.kicker {
+    color: #00d4ff;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+h1 {
+    font-size: 42px;
+    font-weight: 300;
+}
+
+.description {
+    margin-top: 10px;
+    color: #9fb3d9;
+    max-width: 820px;
+    line-height: 1.5;
+}
+
+button,
+.button-link {
+    border: none;
+    background: linear-gradient(135deg, #00d4ff, #0099cc);
+    color: #061022;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+}
+
+.button-secondary {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    color: white;
+}
+
+button:hover,
+.button-link:hover {
+    opacity: 0.92;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    margin-bottom: 35px;
+}
+
+.card {
+    background: rgba(17, 37, 93, .88);
+    border: 1px solid rgba(255,255,255,.08);
+    padding: 26px;
+    border-radius: 16px;
+    box-shadow: 0 14px 34px rgba(0,0,0,.16);
+}
+
+.card h3 {
+    margin-bottom: 18px;
+    font-size: 14px;
+    color: #b7c5ff;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+}
+
+.card p {
+    font-size: 34px;
+    font-weight: 800;
+}
+
+.table-wrap {
+    background: rgba(17, 37, 93, .88);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 14px 34px rgba(0,0,0,.16);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: rgba(13, 29, 77, .9);
+}
+
+th {
+    text-align: left;
+    padding: 18px;
+    font-size: 13px;
+    color: #9db7ff;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+}
+
+td {
+    padding: 18px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.status {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+    text-transform: uppercase;
+}
+
+.completed {
+    background: #00d08433;
+    color: #00ffae;
+}
+
+.pending {
+    background: #ffc10733;
+    color: #ffd54f;
+}
+
+.failed {
+    background: #ff4d4d33;
+    color: #ff8080;
+}
+
+.empty {
+    padding: 40px;
+    text-align: center;
+    color: #8ea3d9;
+}
+
+.error {
+    padding: 18px;
+    color: #ff8080;
+    text-align: center;
+}
+
+.version {
+    position: fixed;
+    bottom: 10px;
+    right: 12px;
+    color: #44506e;
+    font-size: 12px;
+}
+
+@media(max-width: 1100px) {
+    .app {
+        grid-template-columns: 1fr;
+    }
+
+    h1 {
+        font-size: 34px;
+    }
+
+    .topbar,
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .container {
+        padding: 22px;
+    }
+
+    table {
+        font-size: 14px;
+    }
+
+    th, td {
+        padding: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-title">E.L.Y.A.S.-A.I.</div>
+            <div class="brand-subtitle">Spirits Tech Terminal</div>
+        </div>
+
+        <div class="nav">
+            <div class="nav-title">Platform</div>
+            <a href="portfolio.html?v=999">📊 Dashboard</a>
+            <a href="cask-detail.html?v=999">🥃 Cask Monitoring</a>
+            <a href="marketplace.html?v=999">📈 Whisky Exchange</a>
+            <a class="active" href="transactions.html?v=999">💳 Transactions</a>
+            <a href="investor-dashboard.html?v=999">💼 Investor View</a>
+            <a href="admin.html?v=999">⚙️ Admin</a>
+
+            <div class="nav-title">Business Lines</div>
+            <a href="marketplace.html?v=999#cask-exchange">🏛️ Cask Exchange</a>
+            <a href="marketplace.html?v=999#bottle-exchange">🍾 Bottle Exchange</a>
+            <a href="marketplace.html?v=999#shop">🛒 Distillery Shop</a>
+            <a href="marketplace.html?v=999#b2b">🤝 B2B / B2C</a>
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+            <div>
+                <div class="topbar-title">Transaction Center</div>
+                <div class="topbar-subtitle">Ownership transfer · marketplace purchases · escrow · ledger history</div>
+            </div>
+
+            <div class="actions">
+                <a class="button-link button-secondary" href="portfolio.html?v=999">Portfolio</a>
+                <a class="button-link button-secondary" href="marketplace.html?v=999">Marketplace</a>
+                <button onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <div class="page-header">
+                <div>
+                    <div class="kicker">Ledger & Settlement</div>
+                    <h1>E.L.Y.A.S.-A.I. Transactions</h1>
+                    <div class="description">
+                        Monitor purchases, asset ownership changes, settlement status and trading volume
+                        across casks, bottles, B2B/B2C marketplace and distillery-direct shop.
+                    </div>
+                </div>
+
+                <a class="button-link" href="marketplace.html?v=999">Open Marketplace →</a>
+            </div>
+
+            <div class="stats">
+                <div class="card">
+                    <h3>Total Transactions</h3>
+                    <p id="totalTransactions">0</p>
+                </div>
+
+                <div class="card">
+                    <h3>Total Volume</h3>
+                    <p id="totalVolume">£0</p>
+                </div>
+
+                <div class="card">
+                    <h3>Completed</h3>
+                    <p id="completedTransactions">0</p>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Asset Type</th>
+                            <th>Listing</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="transactionsTable"></tbody>
+                </table>
+
+                <div id="emptyState" class="empty" style="display:none;">
+                    No transactions found.
+                </div>
+
+                <div id="errorState" class="error" style="display:none;"></div>
+
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<div class="version">transactions v999 linked</div>
+
+<script>
+const API_BASE = "https://elyas-ai-production.up.railway.app/api/v1";
+
+const token = localStorage.getItem("token");
+
+if (!token) {
+    window.location.href = "index.html?v=999";
+}
+
+async function loadTransactions(){
+
+    try {
+
+        const response = await fetch(
+            `${API_BASE}/transactions/my`,
+            {
+                cache: "no-store",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Accept": "application/json"
+                }
+            }
+        );
+
+        if (response.status === 401 || response.status === 403) {
+            localStorage.removeItem("token");
+            window.location.href = "index.html?v=999";
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error("Failed to load transactions: " + response.status);
+        }
+
+        const transactions = await response.json();
+
+        renderTransactions(Array.isArray(transactions) ? transactions : []);
+
+    } catch(error) {
+
+        console.error(error);
+
+        document.getElementById("emptyState").style.display = "block";
+        document.getElementById("errorState").style.display = "block";
+        document.getElementById("errorState").innerText =
+            "Transaction API not available yet or no transactions found.";
+
+        renderTransactions([]);
+    }
+}
+
+function renderTransactions(transactions){
+
+    const table = document.getElementById("transactionsTable");
+
+    table.innerHTML = "";
+
+    if (!transactions.length) {
+
+        document.getElementById("emptyState").style.display = "block";
+        document.getElementById("totalTransactions").innerText = "0";
+        document.getElementById("completedTransactions").innerText = "0";
+        document.getElementById("totalVolume").innerText = "£0";
+
+        return;
+    }
+
+    document.getElementById("emptyState").style.display = "none";
+
+    let totalVolume = 0;
+    let completed = 0;
+
+    transactions.forEach(tx => {
+
+        totalVolume += Number(tx.amount_gbp || 0);
+
+        if (tx.status === "completed") {
+            completed++;
+        }
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${tx.id}</td>
+            <td>${tx.asset_type || "-"}</td>
+            <td>${tx.listing_id || "-"}</td>
+            <td>£${Number(tx.amount_gbp || 0).toLocaleString("en-GB")}</td>
+            <td>
+                <span class="status ${tx.status || "pending"}">
+                    ${tx.status || "pending"}
+                </span>
+            </td>
+        `;
+
+        table.appendChild(row);
+    });
+
+    document.getElementById("totalTransactions").innerText =
+        transactions.length;
+
+    document.getElementById("completedTransactions").innerText =
+        completed;
+
+    document.getElementById("totalVolume").innerText =
+        "£" + totalVolume.toLocaleString("en-GB");
+}
+
+function logout(){
+
+    localStorage.removeItem("token");
+
+    window.location.href = "index.html?v=999";
+}
+
+loadTransactions();
+</script>
+
+</body>
+</html>

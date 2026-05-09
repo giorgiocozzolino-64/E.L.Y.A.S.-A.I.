@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>E.L.Y.A.S.-A.I. Platform</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:radial-gradient(circle at top,#172044 0%,#071225 45%,#050817 100%);
+    color:white;
+}
+.app{
+    display:grid;
+    grid-template-columns:270px 1fr;
+    min-height:100vh;
+}
+.sidebar{
+    background:rgba(5,9,24,.96);
+    border-right:1px solid rgba(255,255,255,.08);
+    padding:24px 18px;
+}
+.brand-title{
+    color:#00d4ff;
+    font-size:22px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+.brand-subtitle{
+    margin-top:6px;
+    color:#7f8aad;
+    font-size:12px;
+}
+.nav-title{
+    margin:28px 8px 10px;
+    color:#53607f;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    font-weight:bold;
+}
+.nav a{
+    display:block;
+    padding:12px 14px;
+    margin-bottom:7px;
+    color:#b8c2e0;
+    text-decoration:none;
+    border-radius:10px;
+    font-size:14px;
+}
+.nav a:hover,.nav a.active{
+    background:rgba(0,212,255,.10);
+    color:white;
+}
+.main{
+    min-width:0;
+}
+.topbar{
+    min-height:74px;
+    background:rgba(8,13,34,.88);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 34px;
+    position:sticky;
+    top:0;
+    z-index:10;
+    backdrop-filter:blur(12px);
+}
+.topbar-title{
+    font-size:18px;
+    font-weight:bold;
+}
+.topbar-subtitle{
+    font-size:12px;
+    color:#7f8aad;
+    margin-top:4px;
+}
+.actions{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+button,.btn{
+    background:linear-gradient(135deg,#00d4ff,#0099cc);
+    color:#061022;
+    border:0;
+    padding:10px 16px;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-block;
+    font-size:13px;
+}
+.btn.secondary,button.secondary{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);
+    color:white;
+}
+.container{
+    padding:34px;
+}
+.hero{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:24px;
+    margin-bottom:28px;
+}
+.kicker{
+    color:#00d4ff;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:1.4px;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+h1{
+    margin:0;
+    font-size:42px;
+    font-weight:300;
+}
+.description{
+    margin-top:10px;
+    color:#9fb3d9;
+    max-width:980px;
+    line-height:1.55;
+}
+.role-panel{
+    background:rgba(17,34,74,.88);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:16px;
+    padding:20px;
+    min-width:300px;
+}
+.role-panel label{
+    display:block;
+    color:#9fb3d9;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.8px;
+    margin-bottom:8px;
+}
+select{
+    width:100%;
+    padding:12px;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(5,8,23,.75);
+    color:white;
+}
+.live-strip{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:14px;
+    margin-bottom:24px;
+}
+.metric{
+    background:rgba(17,34,74,.88);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;
+    padding:18px;
+}
+.metric-label{
+    color:#9fb3d9;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.8px;
+    margin-bottom:9px;
+}
+.metric-value{
+    font-size:24px;
+    font-weight:bold;
+}
+.positive{color:#00ff9c}
+.gold{color:#ffcc00}
+.grid{
+    display:grid;
+    grid-template-columns:1.25fr .75fr;
+    gap:22px;
+}
+.panel{
+    background:rgba(17,34,74,.88);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:16px;
+    padding:24px;
+    box-shadow:0 14px 34px rgba(0,0,0,.18);
+}
+.panel h2{
+    margin-top:0;
+}
+.modules{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+}
+.module{
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;
+    padding:20px;
+}
+.module:hover{
+    border-color:rgba(0,212,255,.35);
+}
+.module-icon{
+    font-size:25px;
+    margin-bottom:12px;
+}
+.module h3{
+    margin:0 0 8px;
+}
+.module p{
+    margin:0;
+    color:#9fb3d9;
+    font-size:13px;
+    line-height:1.45;
+}
+.module-actions{
+    margin-top:16px;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+.extension{
+    border:1px solid rgba(0,212,255,.35);
+    background:linear-gradient(180deg,rgba(0,212,255,.10),rgba(17,34,74,.88));
+}
+.permission-row{
+    display:grid;
+    grid-template-columns:130px 1fr;
+    gap:10px;
+    padding:11px 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    font-size:13px;
+}
+.permission-role{
+    color:#00d4ff;
+    font-weight:bold;
+}
+.permission-text{
+    color:#c7d2fe;
+}
+.feed-item{
+    padding:12px 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    color:#c7d2fe;
+    font-size:13px;
+}
+.feed-item b{
+    color:white;
+}
+.role-badge{
+    display:inline-block;
+    margin-top:12px;
+    padding:7px 10px;
+    border-radius:999px;
+    background:rgba(0,255,156,.10);
+    border:1px solid rgba(0,255,156,.35);
+    color:#00ff9c;
+    font-size:12px;
+    font-weight:bold;
+}
+.hidden{
+    display:none;
+}
+.version{
+    position:fixed;
+    right:12px;
+    bottom:10px;
+    color:#44506e;
+    font-size:12px;
+}
+@media(max-width:1200px){
+    .app{grid-template-columns:1fr}
+    .hero,.topbar{flex-direction:column;align-items:flex-start}
+    .grid,.modules,.live-strip{grid-template-columns:1fr}
+    .container{padding:22px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+    <div class="brand-title">E.L.Y.A.S.-A.I.</div>
+    <div class="brand-subtitle">Open Spirits Asset Platform</div>
+
+    <div class="nav">
+        <div class="nav-title">Core</div>
+        <a class="active" href="platform.html?v=1">🏠 Platform Home</a>
+        <a href="portfolio.html?v=999">📊 Portfolio</a>
+        <a href="marketplace.html?v=999">📈 Exchange</a>
+        <a href="transactions.html?v=999">💳 Transactions</a>
+        <a href="admin.html?v=999">⚙️ Admin</a>
+
+        <div class="nav-title">Extensions</div>
+        <a href="cask-detail.html?v=999">🥃 Cask Monitoring</a>
+        <a href="live-engine-demo.html?v=1">📡 Live Market Engine</a>
+        <a href="market-engine-demo.html?v=7">⚡ Execution Engine</a>
+
+        <div class="nav-title">Users</div>
+        <a href="#investor">Investor</a>
+        <a href="#broker">Broker</a>
+        <a href="#distillery">Distillery</a>
+        <a href="#private">Private Seller</a>
+    </div>
+</aside>
+
+<main class="main">
+
+<div class="topbar">
+    <div>
+        <div class="topbar-title">Platform Control Center</div>
+        <div class="topbar-subtitle">Multi-user access · shared monitoring extension · open whisky markets</div>
+    </div>
+
+    <div class="actions">
+        <a class="btn secondary" href="marketplace.html?v=999">Exchange</a>
+        <a class="btn secondary" href="cask-detail.html?v=999">Cask Monitoring</a>
+        <button onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<div class="container">
+
+    <section class="hero">
+        <div>
+            <div class="kicker">Open Infrastructure For Spirits Assets</div>
+            <h1>E.L.Y.A.S.-A.I. Platform</h1>
+            <div class="description">
+                One platform for investors, brokers, distilleries and private sellers. 
+                The Cask Monitoring System is a shared extension across all roles, with different permissions.
+                This is the foundation for an open whisky exchange where investors are independent from opaque broker control.
+            </div>
+            <span id="activeRoleBadge" class="role-badge">Active Role: Investor</span>
+        </div>
+
+        <div class="role-panel">
+            <label>Select Role View</label>
+            <select id="roleSelect" onchange="changeRole()">
+                <option value="investor">Investor</option>
+                <option value="broker">Broker</option>
+                <option value="distillery">Distillery</option>
+                <option value="private">Private Seller</option>
+                <option value="admin">Admin</option>
+            </select>
+        </div>
+    </section>
+
+    <section class="live-strip">
+        <div class="metric">
+            <div class="metric-label">Verified Casks</div>
+            <div class="metric-value">12,482</div>
+            <div class="positive">▲ +128 this week</div>
+        </div>
+        <div class="metric">
+            <div class="metric-label">Exchange Volume</div>
+            <div class="metric-value">£842K</div>
+            <div class="positive">▲ +12.9%</div>
+        </div>
+        <div class="metric">
+            <div class="metric-label">Monitoring Devices</div>
+            <div class="metric-value">3,908</div>
+            <div class="gold">LBB Network</div>
+        </div>
+        <div class="metric">
+            <div class="metric-label">Avg Spread</div>
+            <div class="metric-value">3.8%</div>
+            <div class="positive">Institutional grade</div>
+        </div>
+        <div class="metric">
+            <div class="metric-label">Platform Status</div>
+            <div class="metric-value positive">LIVE</div>
+            <div id="clock">--:--:--</div>
+        </div>
+    </section>
+
+    <section class="grid">
+
+        <div class="panel">
+            <h2 id="roleTitle">Investor Terminal</h2>
+            <p id="roleIntro" class="description">
+                Portfolio, exchange access, transactions and shared cask monitoring.
+            </p>
+
+            <div class="modules">
+
+                <div class="module extension">
+                    <div class="module-icon">🥃</div>
+                    <h3>Cask Monitoring Extension</h3>
+                    <p id="monitoringText">
+                        View owned casks, real-time telemetry, valuation, alerts and maturation analytics.
+                    </p>
+                    <div class="module-actions">
+                        <a class="btn" href="cask-detail.html?v=999">Open Monitoring</a>
+                        <a class="btn secondary" href="portfolio.html?v=999">Portfolio</a>
+                    </div>
+                </div>
+
+                <div class="module">
+                    <div class="module-icon">📈</div>
+                    <h3>Whisky Exchange</h3>
+                    <p id="exchangeText">
+                        Buy, sell and monitor verified whisky cask and bottle assets.
+                    </p>
+                    <div class="module-actions">
+                        <a class="btn" href="marketplace.html?v=999">Open Exchange</a>
+                        <a class="btn secondary" href="market-engine-demo.html?v=7">Execution Engine</a>
+                    </div>
+                </div>
+
+                <div class="module">
+                    <div class="module-icon">💳</div>
+                    <h3>Transactions</h3>
+                    <p id="transactionsText">
+                        Track purchases, sales, settlement and history.
+                    </p>
+                    <div class="module-actions">
+                        <a class="btn" href="transactions.html?v=999">View Transactions</a>
+                    </div>
+                </div>
+
+                <div class="module">
+                    <div class="module-icon">📡</div>
+                    <h3>Live Market Engine</h3>
+                    <p>
+                        Realtime market feed, ticker, live prices and recent trades.
+                    </p>
+                    <div class="module-actions">
+                        <a class="btn" href="live-engine-demo.html?v=1">Open Live Engine</a>
+                    </div>
+                </div>
+
+                <div id="adminModule" class="module hidden">
+                    <div class="module-icon">⚙️</div>
+                    <h3>Admin Control Room</h3>
+                    <p>
+                        Manage users, roles, casks, listings, trades, devices and platform governance.
+                    </p>
+                    <div class="module-actions">
+                        <a class="btn" href="admin.html?v=999">Open Admin</a>
+                    </div>
+                </div>
+
+                <div id="distilleryModule" class="module hidden">
+                    <div class="module-icon">🏭</div>
+                    <h3>Distillery Console</h3>
+                    <p>
+                        Manage inventory, direct shop listings, warehouse casks and bottle releases.
+                    </p>
+                    <div class="module-actions">
+                        <a class="btn" href="marketplace.html?v=999#shop">Distillery Shop</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <aside class="panel">
+            <h2>Cask Monitoring Permissions</h2>
+
+            <div class="permission-row">
+                <div class="permission-role">Investor</div>
+                <div class="permission-text">Own casks, values, telemetry, alerts, AI thesis.</div>
+            </div>
+
+            <div class="permission-row">
+                <div class="permission-role">Broker</div>
+                <div class="permission-text">Authorised client casks, reporting, listing preparation.</div>
+            </div>
+
+            <div class="permission-row">
+                <div class="permission-role">Distillery</div>
+                <div class="permission-text">Warehouse inventory, production batches, quality data.</div>
+            </div>
+
+            <div class="permission-row">
+                <div class="permission-role">Private</div>
+                <div class="permission-text">Owned assets, LBB connection, sale readiness.</div>
+            </div>
+
+            <div class="permission-row">
+                <div class="permission-role">Admin</div>
+                <div class="permission-text">All assets, devices, ownership, anomaly control.</div>
+            </div>
+
+            <h2 style="margin-top:28px;">Platform Feed</h2>
+
+            <div id="platformFeed">
+                <div class="feed-item"><b>Exchange:</b> Matching engine active.</div>
+                <div class="feed-item"><b>Monitoring:</b> Leonardo Black Box extension available to all roles.</div>
+                <div class="feed-item"><b>Governance:</b> Multi-role model ready for backend permissions.</div>
+                <div class="feed-item"><b>Market:</b> Investors independent from opaque broker pricing.</div>
+            </div>
+        </aside>
+
+    </section>
+
+</div>
+
+</main>
+</div>
+
+<div class="version">platform v1 multi-role</div>
+
+<script src="assets/js/api-client.js"></script>
+<script>
+const token = localStorage.getItem("token");
+
+if (!token) {
+    window.location.href = "index.html?v=999";
+}
+
+const roleContent = {
+    investor: {
+        title: "Investor Terminal",
+        intro: "Portfolio, exchange access, transactions and shared cask monitoring.",
+        monitoring: "View owned casks, real-time telemetry, valuation, alerts and maturation analytics.",
+        exchange: "Buy, sell and monitor verified whisky cask and bottle assets.",
+        transactions: "Track purchases, sales, settlement and history."
+    },
+    broker: {
+        title: "Broker Desk",
+        intro: "Client portfolios, authorised cask monitoring, OTC flow, listings and commissions.",
+        monitoring: "Monitor authorised client casks, prepare reports and convert monitored assets into marketplace listings.",
+        exchange: "Manage broker-led listings, bids, asks and client execution.",
+        transactions: "Track client trades, commissions and settlement status."
+    },
+    distillery: {
+        title: "Distillery Console",
+        intro: "Warehouse inventory, direct shop, batch tracking, cask telemetry and release management.",
+        monitoring: "Monitor warehouse inventory, production batches, environmental conditions and quality signals.",
+        exchange: "List casks and bottles directly, reducing dependency on intermediaries.",
+        transactions: "Track direct sales, shop revenue, commissions and buyer activity."
+    },
+    private: {
+        title: "Private Seller Desk",
+        intro: "Owned assets, private listings, offers received and Leonardo Black Box connection.",
+        monitoring: "Connect owned casks to Leonardo Black Box, monitor condition and prepare sale-ready verification.",
+        exchange: "List private casks and bottles, receive bids and execute direct sale offers.",
+        transactions: "Track private sales, purchase history and pending settlement."
+    },
+    admin: {
+        title: "Admin Control Room",
+        intro: "Full system control for users, casks, roles, listings, devices, trades and governance.",
+        monitoring: "Access all monitored assets, devices, anomaly alerts, ownership status and data integrity controls.",
+        exchange: "Supervise marketplace activity, listings, matching engine and suspicious activity.",
+        transactions: "Audit all trades, settlements, commissions and platform revenue."
+    }
+};
+
+function changeRole(){
+    const role = document.getElementById("roleSelect").value;
+    const content = roleContent[role];
+
+    document.getElementById("activeRoleBadge").innerText =
+        "Active Role: " + role.charAt(0).toUpperCase() + role.slice(1);
+
+    document.getElementById("roleTitle").innerText = content.title;
+    document.getElementById("roleIntro").innerText = content.intro;
+    document.getElementById("monitoringText").innerText = content.monitoring;
+    document.getElementById("exchangeText").innerText = content.exchange;
+    document.getElementById("transactionsText").innerText = content.transactions;
+
+    document.getElementById("adminModule").classList.toggle("hidden", role !== "admin");
+    document.getElementById("distilleryModule").classList.toggle("hidden", role !== "distillery");
+}
+
+function logout(){
+    localStorage.removeItem("token");
+    window.location.href = "index.html?v=999";
+}
+
+setInterval(function(){
+    document.getElementById("clock").innerText = new Date().toLocaleTimeString("en-GB");
+},1000);
+
+changeRole();
+</script>
+
+</body>
+</html>

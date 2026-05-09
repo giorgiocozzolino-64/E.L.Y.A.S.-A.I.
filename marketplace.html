@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>E.L.Y.A.S.-A.I. Trading Terminal V2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:radial-gradient(circle at top,#172044 0%,#071225 45%,#050817 100%);color:white}
+.app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+.sidebar{background:rgba(5,9,24,.96);border-right:1px solid rgba(255,255,255,.08);padding:22px 16px}
+.brand{margin-bottom:30px;padding:0 8px}.brand-title{color:#00d4ff;font-size:20px;font-weight:bold;letter-spacing:1px}.brand-subtitle{margin-top:5px;color:#7f8aad;font-size:12px}
+.nav-title{margin:26px 10px 10px;color:#53607f;font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:bold}
+.nav a{display:block;padding:12px 14px;margin-bottom:6px;color:#b8c2e0;text-decoration:none;border-radius:10px;font-size:14px}
+.nav a:hover,.nav a.active{background:rgba(0,212,255,.10);color:white}
+.main{min-width:0}.topbar{min-height:72px;background:rgba(8,13,34,.88);border-bottom:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;padding:18px 34px;position:sticky;top:0;z-index:10;backdrop-filter:blur(12px)}
+.topbar-title{font-size:18px;font-weight:bold}.topbar-subtitle{font-size:12px;color:#7f8aad;margin-top:4px}.topbar-actions{display:flex;gap:10px;align-items:center}
+.container{padding:28px}.terminal-header{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:20px}
+.kicker{color:#00d4ff;font-size:12px;text-transform:uppercase;letter-spacing:1.4px;font-weight:bold;margin-bottom:8px}
+h1{margin:0;font-size:36px;font-weight:300}.description{margin-top:8px;color:#9fb3d9;max-width:900px;line-height:1.5}
+button,.button-link{background:linear-gradient(135deg,#00d4ff,#0099cc);color:#061022;border:0;padding:10px 16px;border-radius:8px;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block;font-size:13px}
+button:disabled{opacity:.5;cursor:not-allowed}.button-secondary,.tab{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:white}
+.live-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,255,156,.1);border:1px solid rgba(0,255,156,.35);color:#00ff9c;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:bold;letter-spacing:.6px}
+.pulse{width:9px;height:9px;border-radius:50%;background:#00ff9c;box-shadow:0 0 16px #00ff9c;animation:pulse 1.2s infinite}
+@keyframes pulse{0%{opacity:.4;transform:scale(.9)}50%{opacity:1;transform:scale(1.25)}100%{opacity:.4;transform:scale(.9)}}
+.ticker-tape{overflow:hidden;white-space:nowrap;background:rgba(17,34,74,.88);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 16px;margin-bottom:18px}
+.ticker-item{display:inline-block;margin-right:26px;color:#d8e2ff}.positive{color:#00ff9c}.negative{color:#ff5252}.gold{color:#ffcc00}.cyan{color:#00d4ff}
+.term-grid{display:grid;grid-template-columns:300px minmax(480px,1fr) 360px;gap:18px}
+.panel{background:rgba(17,34,74,.88);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px;box-shadow:0 14px 34px rgba(0,0,0,.18)}
+.panel h3{margin:0 0 14px;font-size:17px}
+.market-list{display:flex;flex-direction:column;gap:10px}.asset-row{padding:12px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(255,255,255,.035);cursor:pointer}
+.asset-row:hover,.asset-row.active{border-color:rgba(0,212,255,.45);background:rgba(0,212,255,.08)}
+.asset-top{display:flex;justify-content:space-between;gap:8px;font-size:13px}.asset-name{font-weight:bold}.asset-meta{font-size:12px;color:#9fb3d9;margin-top:5px}.asset-price{font-size:18px;font-weight:bold;margin-top:8px}
+.ai-signal{margin-top:8px;display:inline-block;font-size:11px;border-radius:999px;padding:5px 8px;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.28);color:#00d4ff}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.stat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px}.stat-label{font-size:11px;color:#9fb3d9;text-transform:uppercase;letter-spacing:.8px}.stat-value{font-size:22px;font-weight:bold;margin-top:8px}
+.order-ladder{display:grid;grid-template-columns:1fr 1fr;gap:14px}.ladder-section{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px}
+.ladder-title{display:flex;justify-content:space-between;margin-bottom:10px;font-weight:bold}.ask-title{color:#ff8080}.bid-title{color:#00ff9c}
+.ladder-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:8px;border-radius:8px;font-size:13px;position:relative;overflow:hidden}
+.ladder-row:before{content:"";position:absolute;left:0;top:0;bottom:0;width:var(--depth);opacity:.16}.ask-row:before{background:#ff5252}.bid-row:before{background:#00ff9c}
+.ladder-row span{position:relative;z-index:1}.mid-price{text-align:center;padding:18px;border-radius:12px;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);margin:14px 0}
+.mid-price .big{font-size:34px;font-weight:bold}.spread{font-size:13px;color:#9fb3d9;margin-top:6px}
+.trade-form{display:grid;gap:12px}.side-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px}.side-btn.buy.active{background:#00ff9c;color:#061022}.side-btn.sell.active{background:#ff5252;color:white}
+.form-group label{display:block;font-size:12px;color:#9fb3d9;margin-bottom:6px;text-transform:uppercase;letter-spacing:.7px}
+.form-group input,.form-group select{width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:rgba(5,8,23,.75);color:white}
+.estimate{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;font-size:13px;color:#c7d2fe}
+.execute{width:100%;padding:14px;font-size:14px}.execute.sell{background:linear-gradient(135deg,#ff5252,#c62828);color:white}.execute.buy{background:linear-gradient(135deg,#00ff9c,#00b877)}
+.feed-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}.feed-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:13px}.feed-row.header{color:#9fb3d9;font-size:11px;text-transform:uppercase;letter-spacing:.7px;font-weight:bold}
+.alert{padding:11px;border-bottom:1px solid rgba(255,255,255,.07);font-size:13px;color:#c7d2fe}.alert b{color:#fff}
+.depth-bar{height:9px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;margin:8px 0 12px}.depth-fill{height:100%;background:linear-gradient(90deg,#00d4ff,#00ff9c);transition:width .4s ease}
+.version{position:fixed;bottom:10px;right:12px;color:#44506e;font-size:12px}
+.flash-up{animation:flashUp .45s}.flash-down{animation:flashDown .45s}@keyframes flashUp{0%{color:#00ff9c;transform:scale(1.03)}100%{color:white;transform:scale(1)}}@keyframes flashDown{0%{color:#ff5252;transform:scale(1.03)}100%{color:white;transform:scale(1)}}
+@media(max-width:1300px){.app{grid-template-columns:1fr}.term-grid{grid-template-columns:1fr}.stats-row,.feed-grid,.order-ladder{grid-template-columns:1fr}.topbar,.terminal-header{align-items:flex-start;gap:15px;flex-direction:column}.container{padding:18px}}
+</style>
+</head>
+
+<body>
+<div class="app">
+<aside class="sidebar">
+    <div class="brand"><div class="brand-title">E.L.Y.A.S.-A.I.</div><div class="brand-subtitle">Spirits Trading Terminal</div></div>
+    <div class="nav">
+        <div class="nav-title">Platform</div>
+        <a href="portfolio.html?v=999">📊 Dashboard</a>
+        <a href="cask-detail.html?v=999">🥃 Cask Monitoring</a>
+        <a class="active" href="marketplace.html?v=999">📈 Trading Terminal</a>
+        <a href="transactions.html?v=999">💳 Transactions</a>
+        <a href="investor-dashboard.html?v=999">💼 Investor View</a>
+        <a href="admin.html?v=999">⚙️ Admin</a>
+        <div class="nav-title">Markets</div>
+        <a href="#cask-exchange">🏛️ Cask Exchange</a>
+        <a href="#bottle-exchange">🍾 Bottle Exchange</a>
+        <a href="#shop">🛒 Distillery Shop</a>
+        <a href="#otc">🤝 OTC Desk</a>
+    </div>
+</aside>
+
+<main class="main">
+<div class="topbar">
+    <div><div class="topbar-title">Trading Terminal V2</div><div class="topbar-subtitle">Order ladder · execution simulator · live trades · AI intelligence</div></div>
+    <div class="topbar-actions"><a class="button-link button-secondary" href="portfolio.html?v=999">Portfolio</a><a class="button-link button-secondary" href="transactions.html?v=999">Transactions</a><button onclick="logout()">Logout</button></div>
+</div>
+
+<div class="container">
+    <div class="terminal-header">
+        <div>
+            <div class="kicker">Live Market Infrastructure</div>
+            <h1>Whisky Exchange Terminal</h1>
+            <div class="description">Institutional trading interface for verified whisky casks, rare bottles and distillery-direct assets.</div>
+        </div>
+        <div class="live-badge"><span class="pulse"></span> MARKET LIVE</div>
+    </div>
+
+    <div class="ticker-tape" id="tickerTape">Loading live ticker...</div>
+
+    <div class="term-grid">
+        <section class="panel">
+            <h3>Market Watch</h3>
+            <div class="market-list" id="assetList">Loading assets...</div>
+        </section>
+
+        <section>
+            <div class="stats-row">
+                <div class="stat"><div class="stat-label">Selected Asset</div><div class="stat-value" id="selectedSymbol">-</div></div>
+                <div class="stat"><div class="stat-label">Last Price</div><div class="stat-value" id="lastPrice">-</div></div>
+                <div class="stat"><div class="stat-label">Spread</div><div class="stat-value" id="spreadValue">-</div></div>
+                <div class="stat"><div class="stat-label">24h Volume</div><div class="stat-value" id="volumeValue">-</div></div>
+            </div>
+
+            <div class="panel">
+                <h3>Order Ladder</h3>
+                <div class="order-ladder">
+                    <div class="ladder-section">
+                        <div class="ladder-title ask-title"><span>ASKS</span><span>Sell Side</span></div>
+                        <div id="asksLadder"></div>
+                    </div>
+
+                    <div class="ladder-section">
+                        <div class="ladder-title bid-title"><span>BIDS</span><span>Buy Side</span></div>
+                        <div id="bidsLadder"></div>
+                    </div>
+                </div>
+
+                <div class="mid-price">
+                    <div class="big" id="midPrice">-</div>
+                    <div class="spread" id="midSpread">Best bid/ask spread</div>
+                </div>
+
+                <div>
+                    <div class="stat-label">Buy-side Liquidity</div>
+                    <div class="depth-bar"><div id="buyDepth" class="depth-fill" style="width:70%"></div></div>
+                    <div class="stat-label">Sell-side Liquidity</div>
+                    <div class="depth-bar"><div id="sellDepth" class="depth-fill" style="width:58%"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <aside class="panel">
+            <h3>Execution Panel</h3>
+
+            <div class="trade-form">
+                <div class="side-toggle">
+                    <button id="buyBtn" class="side-btn buy active" onclick="setSide('BUY')">BUY</button>
+                    <button id="sellBtn" class="side-btn sell" onclick="setSide('SELL')">SELL</button>
+                </div>
+
+                <div class="form-group">
+                    <label>Order Type</label>
+                    <select id="orderType" onchange="updateEstimate()">
+                        <option value="MARKET">Market Order</option>
+                        <option value="LIMIT">Limit Order</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input id="quantity" type="number" min="1" value="1" oninput="updateEstimate()">
+                </div>
+
+                <div class="form-group">
+                    <label>Limit Price</label>
+                    <input id="limitPrice" type="number" min="1" value="0" oninput="updateEstimate()">
+                </div>
+
+                <div class="estimate" id="estimateBox">
+                    Select an asset to estimate execution.
+                </div>
+
+                <button id="executeBtn" class="execute buy" onclick="executeOrder()">Execute BUY</button>
+            </div>
+
+            <div style="margin-top:22px;">
+                <h3>AI Market Signal</h3>
+                <div class="estimate" id="aiBox">Waiting for market data...</div>
+            </div>
+        </aside>
+    </div>
+
+    <div class="feed-grid">
+        <section class="panel">
+            <h3>Recent Trades</h3>
+            <div class="feed-row header"><div>Time</div><div>Asset</div><div>Side</div><div>Price</div></div>
+            <div id="tradesFeed"></div>
+        </section>
+
+        <section class="panel">
+            <h3>AI + Whale Alerts</h3>
+            <div id="alertsFeed"></div>
+        </section>
+    </div>
+</div>
+</main>
+</div>
+
+<div class="version">marketplace v6 terminal</div>
+
+<script src="assets/js/api-client.js"></script>
+<script>
+const API_BASE = "https://elyas-ai-production.up.railway.app/api/v1";
+const token = localStorage.getItem("token");
+
+if (!token) {
+    window.location.href = "index.html?v=999";
+}
+
+let side = "BUY";
+let assets = [];
+let selected = null;
+let prices = {};
+let previousPrices = {};
+let trades = [];
+let alerts = [];
+
+function logout(){
+    localStorage.removeItem("token");
+    window.location.href = "index.html?v=999";
+}
+
+function money(v){
+    return "£" + Number(v || 0).toLocaleString("en-GB");
+}
+
+function pctChange(asset){
+    const p = previousPrices[asset.id] || asset.price_gbp || 1;
+    const c = prices[asset.id] || asset.price_gbp || 0;
+    return ((c - p) / p * 100);
+}
+
+async function apiGet(path){
+    const res = await fetch(API_BASE + path, {
+        cache:"no-store",
+        headers:{
+            "Authorization":"Bearer " + token,
+            "Accept":"application/json"
+        }
+    });
+
+    if (res.status === 401 || res.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "index.html?v=999";
+        return null;
+    }
+
+    if (!res.ok) return null;
+
+    return await res.json();
+}
+
+function normalizeAsset(item){
+    return {
+        id: item.id,
+        symbol: (item.asset_type || "AST").toUpperCase() + "-" + item.id,
+        title: item.title || "Untitled Asset",
+        type: item.asset_type || "asset",
+        seller: item.seller_type || "-",
+        market: item.market || "exchange",
+        status: item.status || "active",
+        price_gbp: Number(item.price_gbp || 0),
+        quantity: Number(item.quantity || 1)
+    };
+}
+
+async function loadAssets(){
+    const data = await apiGet("/marketplace/offers");
+    assets = Array.isArray(data) ? data.map(normalizeAsset) : [];
+
+    assets.forEach(a => {
+        prices[a.id] = a.price_gbp;
+        previousPrices[a.id] = a.price_gbp;
+    });
+
+    selected = assets[0] || null;
+
+    renderAll();
+}
+
+function renderAll(){
+    renderTicker();
+    renderAssetList();
+    renderSelected();
+    renderLadder();
+    renderTrades();
+    renderAlerts();
+    updateEstimate();
+}
+
+function renderTicker(){
+    const box = document.getElementById("tickerTape");
+
+    if (!assets.length) {
+        box.innerHTML = "No live assets.";
+        return;
+    }
+
+    box.innerHTML = assets.map(a => {
+        const ch = pctChange(a);
+        const cls = ch >= 0 ? "positive" : "negative";
+        const arrow = ch >= 0 ? "▲" : "▼";
+        return `<span class="ticker-item"><b>${a.symbol}</b> ${money(prices[a.id])} <span class="${cls}">${arrow} ${Math.abs(ch).toFixed(2)}%</span></span>`;
+    }).join("");
+}
+
+function renderAssetList(){
+    const box = document.getElementById("assetList");
+
+    if (!assets.length) {
+        box.innerHTML = "<div class='asset-row'>No assets found.</div>";
+        return;
+    }
+
+    box.innerHTML = "";
+
+    assets.forEach(a => {
+        const ch = pctChange(a);
+        const cls = ch >= 0 ? "positive" : "negative";
+        const row = document.createElement("div");
+        row.className = "asset-row" + (selected && selected.id === a.id ? " active" : "");
+        row.onclick = function(){
+            selected = a;
+            renderAll();
+        };
+
+        row.innerHTML = `
+            <div class="asset-top">
+                <span class="asset-name">${a.symbol}</span>
+                <span class="${cls}">${ch >= 0 ? "▲" : "▼"} ${Math.abs(ch).toFixed(2)}%</span>
+            </div>
+            <div class="asset-meta">${a.title}</div>
+            <div class="asset-price">${money(prices[a.id])}</div>
+            <span class="ai-signal">${aiSignal(a)}</span>
+        `;
+
+        box.appendChild(row);
+    });
+}
+
+function renderSelected(){
+    if (!selected) return;
+
+    const price = prices[selected.id] || selected.price_gbp;
+    const bid = Math.round(price * 0.972);
+    const ask = Math.round(price * 1.021);
+    const spread = ask - bid;
+    const spreadPct = (spread / price * 100).toFixed(2);
+
+    document.getElementById("selectedSymbol").innerText = selected.symbol;
+    document.getElementById("lastPrice").innerText = money(price);
+    document.getElementById("spreadValue").innerText = spreadPct + "%";
+    document.getElementById("volumeValue").innerText = Math.round(12 + Math.random() * 80);
+    document.getElementById("midPrice").innerText = money(Math.round((bid + ask) / 2));
+    document.getElementById("midSpread").innerText = "Bid " + money(bid) + " / Ask " + money(ask);
+    document.getElementById("limitPrice").value = side === "BUY" ? bid : ask;
+    document.getElementById("aiBox").innerHTML = aiSignalText(selected);
+}
+
+function renderLadder(){
+    if (!selected) return;
+
+    const price = prices[selected.id] || selected.price_gbp;
+    const asks = [];
+    const bids = [];
+
+    for (let i = 5; i >= 1; i--) {
+        asks.push({
+            price: Math.round(price * (1 + 0.006 * i)),
+            qty: Math.max(1, Math.round(Math.random() * 5)),
+            depth: 30 + Math.random() * 65
+        });
+    }
+
+    for (let i = 1; i <= 5; i++) {
+        bids.push({
+            price: Math.round(price * (1 - 0.006 * i)),
+            qty: Math.max(1, Math.round(Math.random() * 5)),
+            depth: 30 + Math.random() * 65
+        });
+    }
+
+    document.getElementById("asksLadder").innerHTML = asks.map(o => `
+        <div class="ladder-row ask-row" style="--depth:${o.depth}%">
+            <span>${money(o.price)}</span><span>${o.qty}</span><span>ASK</span>
+        </div>
+    `).join("");
+
+    document.getElementById("bidsLadder").innerHTML = bids.map(o => `
+        <div class="ladder-row bid-row" style="--depth:${o.depth}%">
+            <span>${money(o.price)}</span><span>${o.qty}</span><span>BID</span>
+        </div>
+    `).join("");
+
+    document.getElementById("buyDepth").style.width = (55 + Math.random() * 35).toFixed(0) + "%";
+    document.getElementById("sellDepth").style.width = (45 + Math.random() * 38).toFixed(0) + "%";
+}
+
+function renderTrades(){
+    const box = document.getElementById("tradesFeed");
+
+    if (!trades.length) {
+        box.innerHTML = "<div class='feed-row'><div>-</div><div>Waiting</div><div>-</div><div>-</div></div>";
+        return;
+    }
+
+    box.innerHTML = trades.slice(0, 10).map(t => `
+        <div class="feed-row">
+            <div>${t.time}</div>
+            <div>${t.symbol}</div>
+            <div class="${t.side === "BUY" ? "positive" : "negative"}">${t.side}</div>
+            <div>${money(t.price)}</div>
+        </div>
+    `).join("");
+}
+
+function renderAlerts(){
+    const box = document.getElementById("alertsFeed");
+
+    if (!alerts.length) {
+        box.innerHTML = "<div class='alert'>AI is monitoring market activity...</div>";
+        return;
+    }
+
+    box.innerHTML = alerts.slice(0, 8).map(a => `<div class="alert">${a}</div>`).join("");
+}
+
+function aiSignal(a){
+    const ch = pctChange(a);
+    if (ch > 0.8) return "Bullish";
+    if (ch < -0.8) return "Weakness";
+    if (a.type === "bottle") return "Collector Demand";
+    return "Stable";
+}
+
+function aiSignalText(a){
+    const ch = pctChange(a);
+    if (ch > 0.8) return "<b class='positive'>Bullish momentum detected.</b><br>AI sees rising demand and tightening spread.";
+    if (ch < -0.8) return "<b class='negative'>Short-term pressure detected.</b><br>AI suggests waiting for stronger bid depth.";
+    if (a.type === "bottle") return "<b class='gold'>Collector demand active.</b><br>Rare bottle liquidity is improving.";
+    return "<b class='cyan'>Stable market.</b><br>Order book depth is balanced and volatility is controlled.";
+}
+
+function setSide(newSide){
+    side = newSide;
+    document.getElementById("buyBtn").classList.toggle("active", side === "BUY");
+    document.getElementById("sellBtn").classList.toggle("active", side === "SELL");
+    const executeBtn = document.getElementById("executeBtn");
+    executeBtn.className = "execute " + (side === "BUY" ? "buy" : "sell");
+    executeBtn.innerText = "Execute " + side;
+    renderSelected();
+    updateEstimate();
+}
+
+function updateEstimate(){
+    if (!selected) return;
+
+    const qty = Number(document.getElementById("quantity").value || 1);
+    const type = document.getElementById("orderType").value;
+    const price = type === "MARKET"
+        ? prices[selected.id]
+        : Number(document.getElementById("limitPrice").value || prices[selected.id]);
+
+    const total = qty * price;
+    const fee = total * 0.025;
+
+    document.getElementById("estimateBox").innerHTML = `
+        <b>${side} ${qty} × ${selected.symbol}</b><br>
+        Order type: ${type}<br>
+        Est. price: ${money(price)}<br>
+        Platform fee: ${money(fee)}<br>
+        Est. total: <b>${money(total + fee)}</b>
+    `;
+}
+
+function executeOrder(){
+    if (!selected) return;
+
+    const qty = Number(document.getElementById("quantity").value || 1);
+    const price = prices[selected.id];
+
+    trades.unshift({
+        time: new Date().toLocaleTimeString("en-GB"),
+        symbol: selected.symbol,
+        side,
+        price,
+        qty
+    });
+
+    alerts.unshift(`<b>${side} order executed:</b> ${qty} × ${selected.symbol} at ${money(price)}.`);
+
+    if (qty >= 3 || price > 50000) {
+        alerts.unshift(`<b class="gold">Whale alert:</b> Large ${side} interest detected in ${selected.symbol}.`);
+    }
+
+    renderTrades();
+    renderAlerts();
+}
+
+function marketTick(){
+    if (!assets.length) return;
+
+    assets.forEach(a => {
+        previousPrices[a.id] = prices[a.id];
+        const drift = (Math.random() - 0.48) * (a.type === "bottle" ? 0.018 : 0.011);
+        prices[a.id] = Math.max(100, Math.round(prices[a.id] * (1 + drift)));
+    });
+
+    if (Math.random() > 0.35) {
+        const a = assets[Math.floor(Math.random() * assets.length)];
+        const side = Math.random() > 0.5 ? "BUY" : "SELL";
+        trades.unshift({
+            time: new Date().toLocaleTimeString("en-GB"),
+            symbol: a.symbol,
+            side,
+            price: prices[a.id],
+            qty: Math.max(1, Math.round(Math.random() * 4))
+        });
+        trades = trades.slice(0, 20);
+    }
+
+    if (Math.random() > 0.72) {
+        const a = assets[Math.floor(Math.random() * assets.length)];
+        alerts.unshift(`<b>AI signal:</b> ${aiSignal(a)} condition detected on ${a.symbol}.`);
+        alerts = alerts.slice(0, 12);
+    }
+
+    renderAll();
+}
+
+loadAssets();
+setInterval(marketTick, 2500);
+</script>
+
+</body>
+</html>

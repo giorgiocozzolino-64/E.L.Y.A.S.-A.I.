@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.v1.router import api_router
+from app.elyas_api_routes import router as elyas_api_router
 from app.db.session import Base, engine
 from app.seed.demo_data import seed_demo_data
 
@@ -38,6 +39,7 @@ patch_database()
 seed_demo_data()
 
 app.include_router(api_router, prefix="/api/v1")
+app.include_router(elyas_api_router, prefix="/api/v1")
 
 
 @app.get("/")

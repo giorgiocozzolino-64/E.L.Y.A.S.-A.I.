@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>E.L.Y.A.S.-A.I. Private Seller Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:radial-gradient(circle at top,#172044 0%,#071225 45%,#050817 100%);color:white}.app{display:grid;grid-template-columns:270px 1fr;min-height:100vh}.sidebar{background:rgba(5,9,24,.96);border-right:1px solid rgba(255,255,255,.08);padding:24px 18px}.brand-title{color:#00d4ff;font-size:22px;font-weight:900;letter-spacing:1px}.brand-subtitle{margin-top:6px;color:#7f8aad;font-size:12px}.nav-title{margin:28px 8px 10px;color:#53607f;font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:bold}.nav a{display:block;padding:12px 14px;margin-bottom:7px;color:#b8c2e0;text-decoration:none;border-radius:10px;font-size:14px}.nav a:hover,.nav a.active{background:rgba(0,212,255,.10);color:white}.main{min-width:0}.topbar{min-height:74px;background:rgba(8,13,34,.88);border-bottom:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;padding:18px 34px;position:sticky;top:0;z-index:10;backdrop-filter:blur(12px)}.topbar-title{font-size:18px;font-weight:bold}.topbar-subtitle{font-size:12px;color:#7f8aad;margin-top:4px}.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}button,.btn{background:linear-gradient(135deg,#00d4ff,#0099cc);color:#061022;border:0;padding:10px 16px;border-radius:8px;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block;font-size:13px}.btn.secondary,button.secondary{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:white}.container{padding:34px}.hero{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:24px}.kicker{color:#00d4ff;font-size:12px;text-transform:uppercase;letter-spacing:1.4px;font-weight:bold;margin-bottom:8px}h1{margin:0;font-size:42px;font-weight:300}.description{margin-top:10px;color:#9fb3d9;max-width:980px;line-height:1.55}.live-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,255,156,.1);border:1px solid rgba(0,255,156,.35);color:#00ff9c;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:bold}.pulse{width:9px;height:9px;border-radius:50%;background:#00ff9c;box-shadow:0 0 16px #00ff9c;animation:pulse 1.2s infinite}@keyframes pulse{0%{opacity:.4;transform:scale(.9)}50%{opacity:1;transform:scale(1.25)}100%{opacity:.4;transform:scale(.9)}}.metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px}.metric{background:rgba(17,34,74,.88);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px}.metric-label{color:#9fb3d9;font-size:11px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:9px}.metric-value{font-size:24px;font-weight:bold}.positive{color:#00ff9c}.negative{color:#ff5252}.gold{color:#ffcc00}.cyan{color:#00d4ff}.layout{display:grid;grid-template-columns:1.15fr .85fr;gap:22px}.panel{background:rgba(17,34,74,.88);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;box-shadow:0 14px 34px rgba(0,0,0,.18)}.panel h2{margin-top:0}.assets{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.asset{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px}.asset:hover{border-color:rgba(0,212,255,.35)}.asset-code{color:#00d4ff;font-weight:bold;font-family:"Courier New",monospace;font-size:13px}.asset-title{margin-top:8px;font-size:19px;font-weight:bold}.asset-meta{margin-top:7px;color:#9fb3d9;font-size:13px}.asset-value{margin-top:14px;font-size:25px;font-weight:bold}.badge{display:inline-block;margin-top:10px;padding:6px 9px;border-radius:999px;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.28);color:#00d4ff;font-size:11px;font-weight:bold;text-transform:uppercase}.badge.good{color:#00ff9c;border-color:rgba(0,255,156,.35);background:rgba(0,255,156,.08)}.badge.warn{color:#ffcc00;border-color:rgba(255,204,0,.35);background:rgba(255,204,0,.08)}.badge.error{color:#ff8080;border-color:rgba(255,82,82,.35);background:rgba(255,82,82,.08)}.row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:13px}.row.header{color:#9fb3d9;font-size:11px;text-transform:uppercase;letter-spacing:.8px;font-weight:bold}.feed-item{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08);color:#c7d2fe;font-size:13px}.feed-item b{color:white}.split{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:22px}.verification{border:1px solid rgba(0,212,255,.35);background:linear-gradient(180deg,rgba(0,212,255,.10),rgba(17,34,74,.88))}.ai{border:1px solid rgba(255,204,0,.34);background:linear-gradient(180deg,rgba(255,204,0,.10),rgba(17,34,74,.88))}.progress{height:9px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;margin-top:8px}.progress div{height:100%;background:linear-gradient(90deg,#00d4ff,#00ff9c)}.readiness{margin-bottom:14px}.readiness-head{display:flex;justify-content:space-between;font-size:13px;color:#c7d2fe}.modules{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.version{position:fixed;right:12px;bottom:10px;color:#44506e;font-size:12px}@media(max-width:1200px){.app{grid-template-columns:1fr}.hero,.topbar{flex-direction:column;align-items:flex-start}.metrics,.layout,.assets,.split,.modules{grid-template-columns:1fr}.container{padding:22px}.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+<div class="brand-title">E.L.Y.A.S.-A.I.</div><div class="brand-subtitle">Private Seller Desk</div>
+<div class="nav">
+<div class="nav-title">Private Seller</div>
+<a href="platform.html?v=1">🏠 Platform Home</a>
+<a class="active" href="private-seller.html?v=1">🧳 Private Seller</a>
+<a href="portfolio.html?v=999">📊 My Portfolio</a>
+<a href="cask-detail.html?v=999">🥃 Cask Monitoring</a>
+<a href="marketplace.html?v=999">📈 Marketplace</a>
+<a href="transactions.html?v=999">💳 Transactions</a>
+<div class="nav-title">Seller Tools</div>
+<a href="#assets">My Assets</a><a href="#verification">Verification</a><a href="#offers">Offers</a><a href="#readiness">Sale Readiness</a>
+<div class="nav-title">Engines</div>
+<a href="market-engine-demo.html?v=7">⚡ Execution Engine</a><a href="live-engine-demo.html?v=1">📡 Live Market Engine</a>
+</div>
+</aside>
+<main class="main">
+<div class="topbar">
+<div><div class="topbar-title">Private Seller Monetization Desk</div><div class="topbar-subtitle">Owned assets · verification · direct listing · offers · AI sell timing</div></div>
+<div class="actions"><a class="btn secondary" href="platform.html?v=1">Platform</a><a class="btn secondary" href="marketplace.html?v=999">Marketplace</a><a class="btn secondary" href="cask-detail.html?v=999">Monitoring</a><button onclick="logout()">Logout</button></div>
+</div>
+<div class="container">
+<section class="hero">
+<div><div class="kicker">Collector To Market Infrastructure</div><h1>Private Seller Dashboard</h1><div class="description">Turn private whisky assets into verified, marketable inventory: connect Leonardo Black Box, prove provenance, evaluate liquidity, receive offers and list directly without opaque broker dependency.</div></div>
+<div class="live-badge"><span class="pulse"></span> SELLER LIVE</div>
+</section>
+<section class="metrics">
+<div class="metric"><div class="metric-label">Owned Assets</div><div class="metric-value">9</div><div class="cyan">5 casks · 4 bottles</div></div>
+<div class="metric"><div class="metric-label">Estimated Value</div><div class="metric-value">£286K</div><div class="positive">▲ +11.8%</div></div>
+<div class="metric"><div class="metric-label">Sale Ready</div><div class="metric-value">4</div><div class="gold">2 need verification</div></div>
+<div class="metric"><div class="metric-label">Offers Received</div><div class="metric-value">12</div><div class="positive">£198K total</div></div>
+<div class="metric"><div class="metric-label">AI Sell Score</div><div class="metric-value">86/100</div><div class="positive">Good timing</div></div>
+</section>
+<section class="layout">
+<div class="panel" id="assets">
+<h2>My Assets</h2><p class="description">Private inventory ready for verification, listing and direct market access.</p>
+<div class="assets">
+<div class="asset"><div class="asset-code">PS-CASK-001</div><div class="asset-title">Macallan 2019 Sherry Hogshead</div><div class="asset-meta">Speyside · 250L · provenance complete</div><div class="asset-value">£92,000</div><span class="badge good">Sale Ready</span><div style="margin-top:14px;"><a class="btn" href="marketplace.html?v=999">List</a> <a class="btn secondary" href="cask-detail.html?v=999">Monitor</a></div></div>
+<div class="asset"><div class="asset-code">PS-CASK-002</div><div class="asset-title">Ardbeg 2021 Bourbon Barrel</div><div class="asset-meta">Islay · 200L · LBB sync pending</div><div class="asset-value">£61,000</div><span class="badge warn">Verify LBB</span><div style="margin-top:14px;"><a class="btn" href="cask-detail.html?v=999">Connect LBB</a> <a class="btn secondary" href="marketplace.html?v=999">Preview</a></div></div>
+<div class="asset"><div class="asset-code">BOTTLE-1998-A</div><div class="asset-title">Rare 1998 Single Malt Release</div><div class="asset-meta">Bottle · verified provenance · collector demand</div><div class="asset-value">£8,400</div><span class="badge good">High Demand</span><div style="margin-top:14px;"><a class="btn" href="marketplace.html?v=999">Sell</a> <a class="btn secondary" href="transactions.html?v=999">History</a></div></div>
+<div class="asset"><div class="asset-code">PS-CASK-003</div><div class="asset-title">Bunnahabhain 2020 Quarter Cask</div><div class="asset-meta">Islay · 125L · documentation review</div><div class="asset-value">£44,500</div><span class="badge warn">Docs Review</span><div style="margin-top:14px;"><a class="btn" href="#verification">Verify</a> <a class="btn secondary" href="broker-desk.html?v=1">Broker Offer</a></div></div>
+</div>
+</div>
+<aside class="panel ai">
+<h2>AI Sell Timing</h2>
+<div class="feed-item"><b>Sell Signal:</b> Macallan sherry cask has strong liquidity and favourable spread.</div>
+<div class="feed-item"><b>Hold Signal:</b> Ardbeg 2021 may benefit from 12-18 months additional maturation.</div>
+<div class="feed-item"><b>Buyer Demand:</b> Rare 1998 bottle class is attracting collector bids.</div>
+<div class="feed-item"><b>Risk:</b> Bunnahabhain docs must be completed before premium listing.</div>
+<div style="margin-top:18px;"><a class="btn" href="marketplace.html?v=999">Open Marketplace</a> <a class="btn secondary" href="market-engine-demo.html?v=7">Execution Engine</a></div>
+</aside>
+</section>
+<section class="split">
+<div class="panel verification" id="verification">
+<h2>Verification & Leonardo Black Box</h2><p class="description">Verification turns a private asset into a trusted exchange-ready asset.</p>
+<div class="row header"><div>Asset</div><div>Provenance</div><div>LBB</div><div>Status</div></div>
+<div class="row"><div class="cyan">PS-CASK-001</div><div class="positive">Complete</div><div class="positive">Online</div><div><span class="badge good">Verified</span></div></div>
+<div class="row"><div class="cyan">PS-CASK-002</div><div class="positive">Complete</div><div class="gold">Pending</div><div><span class="badge warn">LBB Needed</span></div></div>
+<div class="row"><div class="cyan">BOTTLE-1998-A</div><div class="positive">Complete</div><div>N/A</div><div><span class="badge good">Verified</span></div></div>
+<div class="row"><div class="cyan">PS-CASK-003</div><div class="gold">Review</div><div class="gold">Pending</div><div><span class="badge warn">Review</span></div></div>
+</div>
+<div class="panel" id="readiness">
+<h2>Sale Readiness</h2>
+<div class="readiness"><div class="readiness-head"><span>Provenance Complete</span><span>78%</span></div><div class="progress"><div style="width:78%"></div></div></div>
+<div class="readiness"><div class="readiness-head"><span>LBB / Telemetry Linked</span><span>56%</span></div><div class="progress"><div style="width:56%"></div></div></div>
+<div class="readiness"><div class="readiness-head"><span>Market Liquidity</span><span>84%</span></div><div class="progress"><div style="width:84%"></div></div></div>
+<div class="readiness"><div class="readiness-head"><span>Listing Quality</span><span>72%</span></div><div class="progress"><div style="width:72%"></div></div></div>
+<div class="feed-item"><b>AI:</b> Complete LBB sync on Ardbeg 2021 before listing to improve buyer confidence.</div>
+</div>
+</section>
+<section class="split">
+<div class="panel" id="offers">
+<h2>Offers Received</h2>
+<div class="row header"><div>Asset</div><div>Buyer Type</div><div>Offer</div><div>Status</div></div>
+<div class="row"><div>Macallan 2019</div><div>Institutional</div><div class="positive">£88,500</div><div><span class="badge warn">Review</span></div></div>
+<div class="row"><div>Rare 1998 Bottle</div><div>Collector</div><div class="positive">£8,900</div><div><span class="badge good">Strong</span></div></div>
+<div class="row"><div>Bunnahabhain 2020</div><div>Broker Desk</div><div>£41,200</div><div><span class="badge warn">Conditional</span></div></div>
+</div>
+<div class="panel" id="actions">
+<h2>Seller Actions</h2>
+<div class="modules">
+<div class="asset"><div class="asset-title">📤 Create Listing</div><div class="asset-meta">Publish verified cask or bottle to marketplace.</div><div style="margin-top:14px;"><a class="btn" href="marketplace.html?v=999">List Asset</a></div></div>
+<div class="asset"><div class="asset-title">🔍 Verify Asset</div><div class="asset-meta">Complete provenance and LBB verification.</div><div style="margin-top:14px;"><a class="btn" href="cask-detail.html?v=999">Verify</a></div></div>
+<div class="asset"><div class="asset-title">🤝 Request Broker</div><div class="asset-meta">Ask broker desk for OTC support.</div><div style="margin-top:14px;"><a class="btn" href="broker-desk.html?v=1">Broker Desk</a></div></div>
+<div class="asset"><div class="asset-title">💳 Transactions</div><div class="asset-meta">Track sales, purchases and settlement.</div><div style="margin-top:14px;"><a class="btn" href="transactions.html?v=999">Open</a></div></div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+<div class="version">private-seller v1</div>
+<script src="assets/js/api-client.js"></script>
+<script>
+const token=localStorage.getItem("token");if(!token){window.location.href="index.html?v=999";}
+function logout(){localStorage.removeItem("token");window.location.href="index.html?v=999";}
+setInterval(function(){
+ const items=["<b>AI:</b> New buyer interest detected for verified private casks.","<b>Offer:</b> Collector demand increased for rare bottle assets.","<b>Verification:</b> LBB sync improves listing quality score.","<b>Market:</b> Private cask liquidity remains strong.","<b>Signal:</b> Macallan offer is within acceptable execution range."];
+ const panels=document.querySelectorAll(".ai .feed-item"); 
+},5000);
+</script>
+</body>
+</html>
