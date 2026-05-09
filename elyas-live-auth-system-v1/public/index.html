@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>E.L.Y.A.S.-A.I. Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:radial-gradient(circle at top,#172044 0%,#071225 45%,#050817 100%);
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+.login-box{
+    width:430px;
+    background:rgba(17,34,74,.92);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:18px;
+    padding:38px;
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
+}
+.logo{
+    color:#00d4ff;
+    font-size:40px;
+    font-weight:900;
+    margin-bottom:8px;
+}
+.subtitle{
+    color:#8fa7d6;
+    margin-bottom:26px;
+    line-height:1.5;
+}
+label{
+    display:block;
+    margin-bottom:8px;
+    color:#9fb3d9;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:.8px;
+}
+input,select{
+    width:100%;
+    padding:14px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(5,8,23,.75);
+    color:white;
+    margin-bottom:16px;
+    font-size:14px;
+}
+button{
+    width:100%;
+    padding:15px;
+    border-radius:10px;
+    border:0;
+    background:linear-gradient(135deg,#00d4ff,#0099cc);
+    color:#04101f;
+    font-weight:bold;
+    font-size:15px;
+    cursor:pointer;
+}
+button:hover{opacity:.92}
+.demo{
+    margin-top:22px;
+    padding:16px;
+    border-radius:12px;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.06);
+    font-size:13px;
+    color:#9fb3d9;
+    line-height:1.6;
+}
+.demo button{
+    margin-top:10px;
+    padding:10px;
+    font-size:12px;
+}
+.status{
+    margin-top:16px;
+    min-height:20px;
+    color:#00ff9c;
+    font-size:14px;
+}
+.error{color:#ff8080}
+.version{
+    position:fixed;
+    bottom:10px;
+    right:14px;
+    color:#4c5c84;
+    font-size:12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+    <div class="logo">E.L.Y.A.S.-A.I.</div>
+
+    <div class="subtitle">
+        Institutional whisky exchange infrastructure.<br>
+        Live auth + role-based routing.
+    </div>
+
+    <label>Email</label>
+    <input id="email" value="investor@elyas-ai.com">
+
+    <label>Password</label>
+    <input id="password" type="password" value="demo123">
+
+    <label>Role View</label>
+    <select id="role" onchange="setDemoEmail()">
+        <option value="investor">Investor</option>
+        <option value="broker">Broker</option>
+        <option value="distillery">Distillery</option>
+        <option value="private">Private Seller</option>
+        <option value="admin">Admin</option>
+    </select>
+
+    <button onclick="login()">Access Platform</button>
+
+    <div id="status" class="status"></div>
+
+    <div class="demo">
+        <b>Demo users</b><br>
+        investor@elyas-ai.com / demo123<br>
+        broker@elyas-ai.com / demo123<br>
+        distillery@elyas-ai.com / demo123<br>
+        private@elyas-ai.com / demo123<br>
+        admin@elyas-ai.com / demo123
+    </div>
+
+</div>
+
+<div class="version">live-auth v1</div>
+
+<script src="assets/js/api-client.js"></script>
+
+<script>
+const roleRoutes = {
+    investor: "investor-dashboard.html?v=1",
+    broker: "broker-desk.html?v=1",
+    distillery: "distillery-console.html?v=1",
+    private: "private-seller.html?v=1",
+    admin: "admin.html?v=999"
+};
+
+const roleEmails = {
+    investor: "investor@elyas-ai.com",
+    broker: "broker@elyas-ai.com",
+    distillery: "distillery@elyas-ai.com",
+    private: "private@elyas-ai.com",
+    admin: "admin@elyas-ai.com"
+};
+
+function setDemoEmail(){
+    const role = document.getElementById("role").value;
+    document.getElementById("email").value = roleEmails[role];
+}
+
+async function login(){
+    const status = document.getElementById("status");
+    status.className = "status";
+    status.innerText = "Authenticating...";
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const selectedRole = document.getElementById("role").value;
+
+    if(!email || !password){
+        status.className = "status error";
+        status.innerText = "Missing credentials.";
+        return;
+    }
+
+    try{
+        const response = await fetch("https://elyas-ai-production.up.railway.app/api/v1/auth/login", {
+            method: "POST",
+            cache: "no-store",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                email,
+                password,
+                role: selectedRole
+            })
+        });
+
+        const data = await response.json();
+
+        if(!response.ok){
+            status.className = "status error";
+            status.innerText = data.detail || "Invalid credentials.";
+            return;
+        }
+
+        localStorage.setItem("token", data.access_token);
+        localStorage.setItem("role", data.role);
+        localStorage.setItem("email", data.user.email);
+        localStorage.setItem("elyas_user_cache", JSON.stringify(data.user));
+
+        status.innerText = "Authentication successful. Redirecting...";
+
+        const route = roleRoutes[data.role] || roleRoutes.investor;
+
+        setTimeout(() => {
+            window.location.href = route;
+        }, 500);
+
+    }catch(error){
+        console.error(error);
+        status.className = "status error";
+        status.innerText = "Backend connection error.";
+    }
+}
+
+async function boot(){
+    const token = localStorage.getItem("token");
+
+    if(!token) return;
+
+    try{
+        const response = await fetch("https://elyas-ai-production.up.railway.app/api/v1/me", {
+            headers: {
+                "Authorization": "Bearer " + token,
+                "Accept": "application/json"
+            },
+            cache: "no-store"
+        });
+
+        if(!response.ok) {
+            localStorage.removeItem("token");
+            return;
+        }
+
+        const user = await response.json();
+        const role = user.role || localStorage.getItem("role") || "investor";
+
+        localStorage.setItem("role", role);
+        localStorage.setItem("elyas_user_cache", JSON.stringify(user));
+
+        if(roleRoutes[role]){
+            window.location.href = roleRoutes[role];
+        }
+
+    }catch(e){
+        console.log("Session boot skipped:", e);
+    }
+}
+
+boot();
+</script>
+
+</body>
+</html>

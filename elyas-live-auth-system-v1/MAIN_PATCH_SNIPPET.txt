@@ -1,0 +1,3 @@
+from app.live_auth_routes import router as live_auth_router
+
+app.include_router(live_auth_router, prefix="/api/v1")
