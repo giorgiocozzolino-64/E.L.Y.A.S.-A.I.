@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>WOW Login</title>
+
+<style>
+body{
+    background:#071226;
+    color:white;
+    font-family:Arial;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.box{
+    width:400px;
+    background:#0d1b3d;
+    padding:40px;
+    border-radius:20px;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    margin-top:12px;
+    border:none;
+    border-radius:10px;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    margin-top:20px;
+    background:#00cfff;
+    border:none;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+h1{
+    color:#ffbe44;
+}
+
+#status{
+    margin-top:20px;
+    color:#00ff99;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+<h1>WOW × ELYAS LOGIN</h1>
+
+<input id="email" placeholder="email">
+<input id="password" type="password" placeholder="password">
+
+<button onclick="login()">LOGIN</button>
+
+<div id="status"></div>
+
+</div>
+
+<script>
+
+async function login(){
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    try{
+
+        const response = await fetch(
+            "http://localhost:8000/api/v1/auth/login",
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    email,
+                    password
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        console.log(data);
+
+        localStorage.setItem(
+            "elyas_token",
+            data.access_token
+        );
+
+        localStorage.setItem(
+            "elyas_user",
+            JSON.stringify(data.user)
+        );
+
+        document.getElementById("status").innerHTML =
+            "LOGIN SUCCESS";
+
+        setTimeout(()=>{
+            window.location.href =
+                "/wow-elyas-live.html";
+        },1000);
+
+    }catch(err){
+
+        console.error(err);
+
+        document.getElementById("status").innerHTML =
+            "LOGIN FAILED";
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>

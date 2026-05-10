@@ -11,7 +11,7 @@ def get_or_create_user(db, email, full_name, role, password):
     if user:
         user.full_name = full_name
         user.role = role
-        user.hashed_password = get_password_hash(password)
+        user.password_hash = get_password_hash(password)
         user.is_active = True
         db.add(user)
         db.flush()
@@ -21,7 +21,7 @@ def get_or_create_user(db, email, full_name, role, password):
         email=email,
         full_name=full_name,
         role=role,
-        hashed_password=get_password_hash(password),
+        password_hash=get_password_hash(password),
         is_active=True,
     )
     db.add(user)

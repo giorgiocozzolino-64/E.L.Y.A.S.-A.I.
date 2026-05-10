@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>W.O.W. — E.L.Y.A.S. Live Bridge</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{box-sizing:border-box}
+:root{
+  --bg:#050817;
+  --panel:#11224a;
+  --cyan:#00d4ff;
+  --green:#00ff9c;
+  --gold:#ffbf4d;
+  --red:#ff6b6b;
+  --muted:#9fb3d9;
+}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:radial-gradient(circle at top left,rgba(0,212,255,.16),transparent 34%),linear-gradient(135deg,#050817,#071225 55%,#02040f);
+  color:white;
+}
+.topbar{
+  min-height:76px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  padding:18px 30px;
+  background:rgba(5,8,23,.88);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{
+  width:46px;height:46px;border-radius:15px;
+  background:linear-gradient(135deg,var(--gold),#8b5a18);
+  color:#061022;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+}
+.brand-title{font-size:22px;font-weight:900}
+.brand-sub{font-size:12px;color:var(--muted);margin-top:3px}
+.nav{display:flex;gap:10px;flex-wrap:wrap}
+.btn{
+  color:white;text-decoration:none;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.06);
+  padding:10px 14px;
+  border-radius:10px;
+  font-size:13px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.btn.primary{
+  background:linear-gradient(135deg,var(--cyan),#0099cc);
+  color:#061022;
+  border:0;
+}
+.container{max-width:1800px;margin:auto;padding:28px}
+.hero{
+  display:grid;
+  grid-template-columns:1fr 500px;
+  gap:22px;
+  margin-bottom:22px;
+}
+.panel{
+  background:rgba(17,34,74,.78);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:24px;
+  padding:24px;
+  box-shadow:0 20px 60px rgba(0,0,0,.24);
+}
+.kicker{
+  color:var(--cyan);
+  font-size:12px;
+  letter-spacing:1.8px;
+  text-transform:uppercase;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+h1{
+  margin:0;
+  font-size:58px;
+  line-height:.98;
+  font-weight:300;
+}
+h1 strong{color:var(--gold);font-weight:900}
+.description{
+  color:var(--muted);
+  line-height:1.6;
+  margin-top:16px;
+  max-width:950px;
+}
+.metrics{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+.metric{
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  padding:16px;
+}
+.metric-label{
+  color:var(--muted);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  margin-bottom:8px;
+}
+.metric-value{font-size:27px;font-weight:900}
+.green{color:var(--green)}
+.gold{color:var(--gold)}
+.cyan{color:var(--cyan)}
+.red{color:var(--red)}
+.statusbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+.status-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  border-radius:999px;
+  padding:9px 13px;
+  font-size:12px;
+  font-weight:900;
+  text-transform:uppercase;
+  background:rgba(0,255,156,.08);
+  border:1px solid rgba(0,255,156,.32);
+  color:var(--green);
+}
+.status-pill.error{
+  background:rgba(255,107,107,.08);
+  border-color:rgba(255,107,107,.32);
+  color:var(--red);
+}
+.dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:currentColor;
+}
+.grid{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:22px;
+}
+.table-wrap{
+  overflow:auto;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.08);
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:980px;
+}
+th,td{
+  padding:14px 16px;
+  text-align:left;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+th{
+  color:var(--cyan);
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  background:rgba(5,8,23,.38);
+}
+td{color:#e6eeff}
+tr:hover{background:rgba(0,212,255,.06)}
+.badge{
+  display:inline-block;
+  padding:6px 9px;
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  font-size:11px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+.badge.low{color:var(--green);border-color:rgba(0,255,156,.35)}
+.badge.mid{color:var(--gold);border-color:rgba(255,191,77,.35)}
+.badge.high{color:var(--red);border-color:rgba(255,107,107,.35)}
+.card-list{display:grid;gap:14px}
+.asset-card{
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  padding:18px;
+}
+.asset-head{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+}
+.asset-code{
+  color:var(--cyan);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:1px;
+}
+.asset-name{
+  font-size:22px;
+  font-weight:900;
+  margin:7px 0;
+}
+.asset-meta{
+  color:var(--muted);
+  line-height:1.55;
+  font-size:14px;
+}
+.asset-value{
+  font-size:28px;
+  font-weight:900;
+  margin-top:12px;
+}
+.small{font-size:12px;color:var(--muted)}
+.footer-note{
+  color:#5d6b91;
+  font-size:12px;
+  margin-top:18px;
+}
+input{
+  background:rgba(5,8,23,.8);
+  color:white;
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:10px;
+  padding:11px 13px;
+  min-width:260px;
+}
+@media(max-width:1150px){
+  .hero,.grid{grid-template-columns:1fr}
+  h1{font-size:42px}
+  .topbar{align-items:flex-start;flex-direction:column}
+  .container{padding:18px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="logo">W</div>
+    <div>
+      <div class="brand-title">W.O.W. — World Of Whisky</div>
+      <div class="brand-sub" id="loginStatus">Checking E.L.Y.A.S. session...</div>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <a class="btn" href="index.html?v=live">Map</a>
+    <a class="btn" href="distillery.html?name=Ardbeg%20Distillery">Distillery Profile</a>
+    <button class="btn primary" onclick="loadCasks()">Refresh Live Data</button>
+    <button class="btn" onclick="logout()">Logout</button>
+  </nav>
+</header>
+
+<main class="container">
+
+  <section class="hero">
+    <div class="panel">
+      <div class="kicker">WOW ↔ ELYAS AUTHENTICATED LIVE CONNECTION</div>
+      <h1><strong>Live Cask</strong><br>Intelligence</h1>
+
+      <div class="description">
+        This protected W.O.W. page connects to the E.L.Y.A.S. FastAPI backend using JWT authentication.
+        Data is loaded live from PostgreSQL through <b>/api/v1/casks</b>.
+      </div>
+
+      <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn primary" onclick="loadCasks()">Load E.L.Y.A.S. Casks</button>
+        <a class="btn" href="http://localhost:8000/docs" target="_blank">Open API Docs</a>
+        <a class="btn" href="http://localhost:8000/api/v1/casks" target="_blank">Raw JSON</a>
+      </div>
+
+      <div class="footer-note">
+        Local development endpoint: <span id="apiLabel"></span>
+      </div>
+    </div>
+
+    <aside class="panel">
+      <h2 style="margin-top:0">Live Portfolio Metrics</h2>
+
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric-label">Casks Loaded</div>
+          <div id="metricCount" class="metric-value">--</div>
+          <div class="cyan">API response</div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Current Value</div>
+          <div id="metricCurrent" class="metric-value">--</div>
+          <div>GBP live</div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Projected Value</div>
+          <div id="metricProjected" class="metric-value gold">--</div>
+          <div>Future potential</div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Avg Risk</div>
+          <div id="metricRisk" class="metric-value green">--</div>
+          <div>AI risk layer</div>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <section class="panel">
+    <div class="statusbar">
+      <div id="statusPill" class="status-pill">
+        <span class="dot"></span>
+        <span id="statusText">Waiting for E.L.Y.A.S.</span>
+      </div>
+
+      <input id="searchBox" placeholder="Search cask / distillery..." oninput="renderData()">
+    </div>
+
+    <div class="grid">
+      <div>
+        <h2 style="margin-top:0">Live Cask Table</h2>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Cask</th>
+                <th>Distillery</th>
+                <th>Region</th>
+                <th>Type</th>
+                <th>Current</th>
+                <th>Projected</th>
+                <th>Maturation</th>
+                <th>Risk</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+
+            <tbody id="caskTable">
+              <tr><td colspan="9">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <aside>
+        <h2 style="margin-top:0">Featured Assets</h2>
+        <div id="assetCards" class="card-list"></div>
+      </aside>
+    </div>
+  </section>
+
+</main>
+
+<script>
+const API_BASE = "http://localhost:8000";
+const CASKS_ENDPOINT = API_BASE + "/api/v1/casks";
+
+let liveCasks = [];
+
+// =====================================================
+// JWT AUTH CHECK
+// =====================================================
+
+const token = localStorage.getItem("elyas_token");
+const user = JSON.parse(localStorage.getItem("elyas_user") || "null");
+
+if (!token) {
+  window.location.href = "/wow-login.html";
+}
+
+window.addEventListener("DOMContentLoaded", function(){
+  const loginStatus = document.getElementById("loginStatus");
+
+  if (user && loginStatus) {
+    loginStatus.innerText =
+      "Logged in as " + user.full_name + " · Role: " + user.role;
+  }
+
+  document.getElementById("apiLabel").innerText = CASKS_ENDPOINT;
+
+  loadCasks();
+});
+
+// =====================================================
+// HELPERS
+// =====================================================
+
+function gbp(value){
+  const n = Number(value || 0);
+  return "£" + n.toLocaleString("en-GB", {maximumFractionDigits:0});
+}
+
+function riskClass(risk){
+  const r = Number(risk || 0);
+  if(r <= 15) return "low";
+  if(r <= 25) return "mid";
+  return "high";
+}
+
+function setStatus(type, text){
+  const pill = document.getElementById("statusPill");
+  const label = document.getElementById("statusText");
+
+  pill.className = "status-pill" + (type === "error" ? " error" : "");
+  label.innerText = text;
+}
+
+// =====================================================
+// LOGOUT
+// =====================================================
+
+function logout(){
+  localStorage.removeItem("elyas_token");
+  localStorage.removeItem("elyas_user");
+  window.location.href = "/wow-login.html";
+}
+
+// =====================================================
+// LIVE API LOAD
+// =====================================================
+
+async function loadCasks(){
+  setStatus("ok", "Connecting to E.L.Y.A.S...");
+
+  try{
+    const response = await fetch(CASKS_ENDPOINT, {
+      cache: "no-store",
+      headers: {
+        "Authorization": "Bearer " + token
+      }
+    });
+
+    if(response.status === 401 || response.status === 403){
+      logout();
+      return;
+    }
+
+    if(!response.ok){
+      throw new Error("API returned " + response.status);
+    }
+
+    liveCasks = await response.json();
+
+    setStatus("ok", "E.L.Y.A.S. LIVE · " + liveCasks.length + " CASKS LOADED");
+
+    updateMetrics();
+    renderData();
+
+  }catch(error){
+    console.error(error);
+
+    setStatus("error", "Connection failed · check localhost:8000 / CORS / Docker");
+
+    document.getElementById("caskTable").innerHTML =
+      '<tr><td colspan="9" class="red">Could not load E.L.Y.A.S. casks. Keep Docker running and test http://localhost:8000/api/v1/casks.</td></tr>';
+
+    document.getElementById("assetCards").innerHTML = "";
+  }
+}
+
+// =====================================================
+// FILTERING
+// =====================================================
+
+function filteredCasks(){
+  const q = document.getElementById("searchBox").value.toLowerCase().trim();
+
+  if(!q) return liveCasks;
+
+  return liveCasks.filter(c =>
+    String(c.cask_code || "").toLowerCase().includes(q) ||
+    String(c.distillery || "").toLowerCase().includes(q) ||
+    String(c.region || "").toLowerCase().includes(q) ||
+    String(c.cask_type || "").toLowerCase().includes(q)
+  );
+}
+
+// =====================================================
+// METRICS
+// =====================================================
+
+function updateMetrics(){
+  const count = liveCasks.length;
+
+  const current = liveCasks.reduce(
+    (s,c) => s + Number(c.current_value_gbp || 0), 0
+  );
+
+  const projected = liveCasks.reduce(
+    (s,c) => s + Number(c.projected_value_gbp || 0), 0
+  );
+
+  const risk = count
+    ? liveCasks.reduce((s,c) => s + Number(c.risk_score || 0), 0) / count
+    : 0;
+
+  document.getElementById("metricCount").innerText = count;
+  document.getElementById("metricCurrent").innerText = gbp(current);
+  document.getElementById("metricProjected").innerText = gbp(projected);
+  document.getElementById("metricRisk").innerText = risk.toFixed(1);
+}
+
+// =====================================================
+// RENDER
+// =====================================================
+
+function renderData(){
+  const data = filteredCasks();
+
+  const rows = data.map(c => `
+    <tr>
+      <td><b>${c.cask_code || "--"}</b></td>
+      <td>${c.distillery || "--"}</td>
+      <td>${c.region || "--"}</td>
+      <td>${c.cask_type || "--"}</td>
+      <td><b>${gbp(c.current_value_gbp)}</b></td>
+      <td class="gold"><b>${gbp(c.projected_value_gbp)}</b></td>
+      <td>${c.maturation_score || "--"}/100</td>
+      <td><span class="badge ${riskClass(c.risk_score)}">${c.risk_score || "--"}</span></td>
+      <td>${c.status || "--"}</td>
+    </tr>
+  `).join("");
+
+  document.getElementById("caskTable").innerHTML =
+    rows || '<tr><td colspan="9">No casks found.</td></tr>';
+
+  const cards = data.slice(0,4).map(c => `
+    <div class="asset-card">
+      <div class="asset-head">
+        <div>
+          <div class="asset-code">${c.cask_code || "--"}</div>
+          <div class="asset-name">${c.distillery || "--"}</div>
+        </div>
+
+        <span class="badge ${riskClass(c.risk_score)}">Risk ${c.risk_score || "--"}</span>
+      </div>
+
+      <div class="asset-meta">
+        ${c.region || "--"} · ${c.cask_type || "--"} · ${c.wood_origin || "--"}<br>
+        ABV ${c.abv || "--"}% · Fill ${c.fill_level || "--"}% · LBB ${c.lbb_device_id || "--"}
+      </div>
+
+      <div class="asset-value">${gbp(c.current_value_gbp)}</div>
+
+      <div class="small">
+        Projected: ${gbp(c.projected_value_gbp)} · Maturation ${c.maturation_score || "--"}/100
+      </div>
+
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        <a class="btn primary" href="distillery.html?name=${encodeURIComponent((c.distillery || '') + ' Distillery')}">Open Distillery</a>
+        <a class="btn" href="https://elyas-ai.com/cask-detail.html?v=999">Cask Detail</a>
+      </div>
+    </div>
+  `).join("");
+
+  document.getElementById("assetCards").innerHTML = cards;
+}
+</script>
+
+</body>
+</html>

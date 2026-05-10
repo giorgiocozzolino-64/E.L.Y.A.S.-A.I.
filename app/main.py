@@ -27,7 +27,11 @@ app.add_middleware(
     allow_origins=[
         "https://elyas-ai.com",
         "https://www.elyas-ai.com",
+        "https://wow-worldofwhisky.com",
+        "https://www.wow-worldofwhisky.com",
         "http://localhost:8000",
+        "http://localhost:5500",
+        "http://127.0.0.1:5500",
         "http://localhost",
         "*",
     ],
